@@ -1,12 +1,17 @@
 # Changelog
 
+## 2026-06-06 nature-only-polishing update
+
+- 按用户偏好改为只用 Nature-skill 承担润色、表达密度和中文课程设计语气处理，不再让通用 `humanizer` 参与水利写作包的默认路线。
+- 更新 `paper-spine/SKILL.md`：PaperSpine 继续负责资料、计算、结构和交付验证；正文写作交给 `nature-writing`，正文润色交给 `nature-polishing`，Word 成品交给 `docx-editor-cn`。
+- 从安装脚本、README 和仓库技能目录中移除 `humanizer` 与 `paper-spine-humanize`，避免旧润色入口继续误触发。
+
 ## 2026-06-06 collaboration-boundary update
 
-- 明确 PaperSpine、Nature、Humanizer 与 docx 的协作边界：PaperSpine 负责总调度、资料/计算闭合和最终验证；Nature 负责正文写作质量和表达密度；docx-editor-cn 负责 Word 成品、模板、格式和回读验证。
+- 明确 PaperSpine、Nature 与 docx 的协作边界：PaperSpine 负责总调度、资料/计算闭合和最终验证；Nature 负责正文写作质量和表达密度；docx-editor-cn 负责 Word 成品、模板、格式和回读验证。
 - 在 `nature-polishing/SKILL.md` 中补充端到端交付边界：遇到计算缺口、参数无来源或模板冲突时，退回 PaperSpine/report-repair 层，不用润色掩盖内容问题。
 - 在 `docx-editor-cn/SKILL.md` 中补充 Word artifact 边界，避免 Word 技能抢占课程设计内容写作角色。
-- 在 `humanizer/SKILL.md` 中明确长篇水利课程设计优先使用 `paper-spine-humanize`，通用 humanizer 只做短文本或最终轻量语气清理。
-- 安装脚本新增同步 `nature-polishing/SKILL.md` 和 `humanizer/SKILL.md`，保证一键安装时能拿到完整协作边界。
+- 安装脚本新增同步 `nature-polishing/SKILL.md`，保证一键安装时能拿到完整协作边界。
 
 ## 2026-06-06 template-cover update
 

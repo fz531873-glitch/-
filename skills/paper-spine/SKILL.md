@@ -1,6 +1,6 @@
 ---
 name: paper-spine
-description: Main PaperSpine dispatcher for papers, reports, coursework, course designs, engineering reports, and water/hydraulic writing. Use when Codex needs to decide whether a request is a local edit, section polish, report repair, or full paper/report build. Choose the smallest sufficient lane, delegate drafting/polishing/humanizing/Word work to branch skills, optionally route light lanes to lower-cost models such as gpt-5.4 when the host supports model overrides, and run the full PaperSpine research-writing workflow only for substantial builds or rewrites.
+description: Main PaperSpine dispatcher for papers, reports, coursework, course designs, engineering reports, and water/hydraulic writing. Use when Codex needs to decide whether a request is a local edit, section polish, report repair, or full paper/report build. Choose the smallest sufficient lane, delegate drafting/polishing to Nature skills and Word work to document skills, optionally route light lanes to lower-cost models such as gpt-5.4 when the host supports model overrides, and run the full PaperSpine research-writing workflow only for substantial builds or rewrites.
 ---
 
 # PaperSpine Orchestrator
@@ -20,13 +20,12 @@ Before reading configuration, launching UI, creating PaperSpine artifacts, or
 starting research, classify the task into one lane:
 
 1. **Local patch**: one sentence, one paragraph, a small Word/Markdown edit,
-   typo repair, wording choice, or narrow anti-AI rewrite. Edit directly or
-   delegate to `nature-polishing`, `paper-spine-humanize`, `humanizer`, or
-   `docx-editor-cn`. Do not create `paper_rewriting_output/`, run intake,
+   typo repair, wording choice, or narrow style polish. Edit directly or
+   delegate to `nature-polishing` or `docx-editor-cn`. Do not create `paper_rewriting_output/`, run intake,
    launch the PaperSpine UI, or require a full configuration.
 2. **Section polish**: one section or a small cluster of paragraphs where the
-   structure is mostly fixed. Use `nature-polishing` for logic and academic
-   clarity, `paper-spine-humanize` or `humanizer` for Chinese anti-AI tone,
+   structure is mostly fixed. Use `nature-polishing` for logic, academic
+   clarity, expression density, and natural Chinese coursework tone,
    and the hydraulic core for water-engineering boundaries. Verify facts,
    numbers, encoding, and edited files.
 3. **Report repair**: calculation/table closure, template repair, Word/PDF
@@ -47,8 +46,8 @@ or cross-file consistency risk. If the user says the task is a big project,
 use the full workflow.
 
 Branch ownership is simple: `nature-writing` drafts or rebuilds prose;
-`nature-polishing` restructures and polishes; `paper-spine-humanize` handles
-Chinese report anti-AI tone; `docx-editor-cn` owns Word files; spreadsheet,
+`nature-polishing` restructures, polishes, and handles Chinese report voice;
+`docx-editor-cn` owns Word files; spreadsheet,
 presentation, citation, LaTeX, translation, and audit branch skills own their
 respective artifacts.
 
@@ -60,11 +59,11 @@ only when the user has asked for model routing, cost control, speed, or
 delegation, or when there is a clear task-specific reason.
 
 - Lane 1 local patch: `gpt-5.4` is suitable for one-sentence rewrites,
-  small Word/Markdown edits, narrow anti-AI polish, and verification. Use
+  small Word/Markdown edits, narrow style polish, and verification. Use
   `gpt-5.4-mini` only for mechanical checks such as typo scans, encoding
   scans, obvious formatting cleanup, or file-existence verification.
 - Lane 2 section polish: `gpt-5.4` can handle small fixed-structure sections,
-  first-pass humanize work, and local wording alternatives. Keep the main
+  first-pass Nature polish, and local wording alternatives. Keep the main
   model for final judgment when the section changes the argument, data
   boundary, or engineering conclusion.
 - Lane 3 report repair: use `gpt-5.4` for bounded side tasks such as table
@@ -138,9 +137,8 @@ Do not let internal planning language enter the report body. Sentences such as
 `本报告先...`, `后文按照...展开`, `论证重点转向...`, and `避免把...处理成...`
 belong in planning artifacts unless they are converted into a local engineering
 judgment with data, formula, parameter source, design consequence, or boundary.
-Actual polishing or humanize work must still be routed to the original
-`nature-polishing`, `nature-writing`, `humanizer`, or `paper-spine-humanize`
-skill as appropriate.
+Actual writing or polishing work must still be routed to `nature-writing` or
+`nature-polishing` as appropriate.
 For long Chinese hydraulic course-design reports, avoid a single-pass rewrite
 that tries to solve calculation, structure, wording, references, and formatting
 at once. Use a staged agentic loop:
@@ -152,9 +150,9 @@ at once. Use a staged agentic loop:
    rewrite prose yet.
 3. Engineering repair: fix calculations, data closure, geometry, scheme scoring,
    and required structure while preserving the template.
-4. Water-expression pass: only after the audit issues are handled, run the
-   Chinese hydraulic expression/humanize layer for rhythm, terminology, and
-   anti-AI cleanup.
+4. Nature expression pass: only after the audit issues are handled, run
+   `nature-polishing` with the hydraulic core for rhythm, terminology, and
+   natural coursework expression.
 5. Artifact verification: reopen/read the actual Word/PDF/Markdown output and
    check paragraph/table counts, key numbers, old values, headings, encoding,
    and required template elements.

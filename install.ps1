@@ -22,14 +22,6 @@ $Mappings = @(
         Target = ".codex\skills\nature-polishing\SKILL.md"
     },
     @{
-        Source = "skills\paper-spine-humanize\references\hydraulic-engineering-expression.md"
-        Target = ".codex\skills\paper-spine-humanize\references\hydraulic-engineering-expression.md"
-    },
-    @{
-        Source = "skills\humanizer\SKILL.md"
-        Target = ".codex\skills\humanizer\SKILL.md"
-    },
-    @{
         Source = "skills\docx-editor-cn\SKILL.md"
         Target = ".codex\skills\docx-editor-cn\SKILL.md"
     }
