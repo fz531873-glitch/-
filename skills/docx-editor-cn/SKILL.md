@@ -1,6 +1,6 @@
 ---
 name: docx-editor-cn
-description: "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of \"Word doc\", \"word document\", \".docx\", or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a \"report\", \"memo\", \"letter\", \"template\", or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation."
+description: "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of \"Word doc\", \"word document\", \".docx\", or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a \"report\", \"memo\", \"letter\", \"template\", or similar deliverable as a Word or .docx file, use this skill for the Word artifact, template, formatting, and verification layer. For course-design/report content, calculations, argument structure, or prose quality, coordinate with PaperSpine and Nature skills; do not let this skill become the content-writing owner. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation."
 license: Proprietary. LICENSE.txt has complete terms
 ---
 
@@ -9,6 +9,16 @@ license: Proprietary. LICENSE.txt has complete terms
 ## Overview
 
 A .docx file is a ZIP archive containing XML files.
+
+## Coordination Boundary
+
+This skill owns the `.docx` artifact: reading, editing, template preservation,
+Word styles, formulas, tables, TOC fields, file validation, and read-back
+verification. For Chinese course reports, course designs, engineering reports,
+or water-conservancy writing, use PaperSpine as the workflow dispatcher and
+Nature writing/polishing for prose quality. Apply this skill after the content,
+calculation, and data-boundary decisions are stable, or as a bounded Word repair
+tool when PaperSpine/Nature has already defined the content change.
 
 ## Quick Reference
 

@@ -37,18 +37,25 @@ skills/
   paper-spine/
     SKILL.md
   nature-polishing/
+    SKILL.md
     static/core/hydraulic-engineering.md
   paper-spine-humanize/
     references/hydraulic-engineering-expression.md
+  humanizer/
+    SKILL.md
   docx-editor-cn/
     SKILL.md
 ```
 
 `paper-spine/SKILL.md` 负责分派任务。它先判断是局部修改、章节润色、报告修复，还是整篇写作。只有整篇报告、结构重建、大范围重写这类任务，才进入完整 PaperSpine 流程。
 
+`nature-polishing/SKILL.md` 放 Nature 润色路由边界。它说明 Nature 负责段落逻辑、学术清晰度和表达密度，但不接管端到端交付；发现计算、参数或模板问题时要退回 PaperSpine。
+
 `nature-polishing/static/core/hydraulic-engineering.md` 放水利专业边界。它提醒模型检查水位、高程、岸脚、反滤层、坡面稳定、植物分区、表格计算和图纸一致性。
 
 `paper-spine-humanize/references/hydraulic-engineering-expression.md` 放中文表达规则。它处理“基于上述……统筹……遵循……原则”这类模板句，让文字更接近课程设计报告里的自然表达。
+
+`humanizer/SKILL.md` 放通用降 AI 边界。长篇水利课程设计优先使用 `paper-spine-humanize`；通用 humanizer 只负责短文本、非水利文本或最终轻量语气清理。
 
 `docx-editor-cn/SKILL.md` 放 Word 成品处理规则。学校或老师提供 `.docx` 模板时，优先从模板开始写，或把正文合并回模板，保留原生封面、节设置、页眉页脚、样式、编号和真实目录域。
 
