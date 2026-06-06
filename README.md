@@ -2,7 +2,7 @@
 
 这套规则来自一次真实的水利课程设计整理。原来的 PaperSpine 和 Nature-skill 已经能处理论文结构、段落逻辑和学术润色，但放到本科水利课设里，还会遇到几个很实际的问题。
 
-比如，只改一句报告正文时，完整 PaperSpine 流程显得太重；处理“降低 AI 痕迹”时，模型容易只换词，不去看这句话背后的工程关系；写生态护岸时，文字会把防冲、排水、护坡、生态并列摆开，却没有说明哪个是安全边界，哪个是后续布置。
+比如，只改一句报告正文时，完整 PaperSpine 流程显得太重；处理“降低 AI 痕迹”时，模型容易只换词，不去看这句话背后的工程关系；写生态护岸时，文字会把防冲、排水、护坡、生态并列摆开，却没有说明哪个是安全边界，哪个是后续布置；老师给了学校 Word 模板时，封面和目录又容易被手工仿写，丢掉原生格式。
 
 这次修改主要补这几块短板。它仍然沿用 PaperSpine 和 Nature-skill 的基础，只把水利课设里反复出现的问题单独收束出来。
 
@@ -14,7 +14,7 @@ Windows PowerShell 里复制下面这行即可：
 iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/-/master/install.ps1 -OutFile "$env:TEMP\install-hydraulic-skill.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydraulic-skill.ps1"
 ```
 
-脚本会把仓库里的三份规则文件安装到本地 `~/.codex/skills` 对应位置。已有文件会先备份，安装完成后重新打开 Codex 或开一个新线程即可。
+脚本会把仓库里的规则文件安装到本地 `~/.codex/skills` 对应位置。已有文件会先备份，安装完成后重新打开 Codex 或开一个新线程即可。
 
 ## 这套规则解决什么
 
@@ -40,6 +40,8 @@ skills/
     static/core/hydraulic-engineering.md
   paper-spine-humanize/
     references/hydraulic-engineering-expression.md
+  docx-editor-cn/
+    SKILL.md
 ```
 
 `paper-spine/SKILL.md` 负责分派任务。它先判断是局部修改、章节润色、报告修复，还是整篇写作。只有整篇报告、结构重建、大范围重写这类任务，才进入完整 PaperSpine 流程。
@@ -47,6 +49,8 @@ skills/
 `nature-polishing/static/core/hydraulic-engineering.md` 放水利专业边界。它提醒模型检查水位、高程、岸脚、反滤层、坡面稳定、植物分区、表格计算和图纸一致性。
 
 `paper-spine-humanize/references/hydraulic-engineering-expression.md` 放中文表达规则。它处理“基于上述……统筹……遵循……原则”这类模板句，让文字更接近课程设计报告里的自然表达。
+
+`docx-editor-cn/SKILL.md` 放 Word 成品处理规则。学校或老师提供 `.docx` 模板时，优先从模板开始写，或把正文合并回模板，保留原生封面、节设置、页眉页脚、样式、编号和真实目录域。
 
 ## 分派方式
 
@@ -80,6 +84,8 @@ PaperSpine 现在先分四档。
 降 AI 时少用口号式原则。能写清“为什么先防冲、为什么要排水、生态布置受什么限制”，比堆几个抽象词更有用。
 
 老师给了模板、任务书或样稿时，先按这些材料走。Nature 风格只用来提高表达质量，不能压过课程设计的格式和任务要求。
+
+学校给了 Word 模板时，模板是母版，不是参考图片。封面、页眉页脚、节属性、目录域和样式要尽量保留原生结构；已经写好的报告可以把正文迁入模板，或把模板原生封面迁入报告，但不能再靠手打复刻封面。
 
 ## 验证情况
 

@@ -111,12 +111,28 @@ scheme comparison, section parameters, construction/maintenance controls, and
 bounded conclusions. For local patches, keep this matrix implicit and verify
 only the edited scope plus any affected numbers or file artifacts.
 
-For water-conservancy, hydrology, hydraulic engineering, ecological revetment,
-river engineering, drainage, urban flooding, ecological water engineering, or
-water-resource topics, use the hydraulic core in Nature polishing/writing as
-the domain guardrail. It owns water-specific checks such as table calculation
-trace, elevation and geometry closure, layer-function precision, plant-zone
-boundaries, figure/CAD consistency, and artifact verification.
+For water-conservancy, hydrology, hydraulic engineering, river engineering,
+drainage, urban flooding, water-environment, water-governance, or water-resource
+topics, use the hydraulic core in Nature polishing/writing as the general domain
+guardrail. It owns water-specific checks such as data-source trace, table
+calculation trace, parameter/source boundaries, scenario and scale clarity,
+data-scope consistency, table/figure evidence closure, and artifact
+verification. Object-specific checks apply only when the current materials
+contain those objects.
+
+When the user provides a local folder of water-conservancy papers, use it as the
+exemplar corpus for the final output. Before writing visible prose for medium or
+full tasks, extract a style profile from multiple papers: chapter organization,
+paragraph rhythm, method-detail level, result/table explanation, engineering-use
+sentences, conclusion pattern, and reference style. The corpus teaches writing
+form and water-paper rhythm; it does not supply facts for the user's project
+unless the user explicitly cites a paper as evidence.
+
+For the user's `论文搭建` corpus specifically, prioritize normative expression:
+object first, pressure second, method/index/model third, result grade/range/
+distribution/trend fourth, engineering use and boundary last. The learned
+standard is plain, evidence-dense, and reproducible; do not turn it into ornate
+journal prose or topic-specific constraints.
 
 Do not let internal planning language enter the report body. Sentences such as
 `本报告先...`, `后文按照...展开`, `论证重点转向...`, and `避免把...处理成...`
@@ -143,6 +159,16 @@ at once. Use a staged agentic loop:
    check paragraph/table counts, key numbers, old values, headings, encoding,
    and required template elements.
 
+When the user provides an official school or teacher Word template, treat that
+template as the base artifact, not as loose visual inspiration. Start the report
+from the template when possible; if a polished report already exists, merge the
+report body into the template while preserving the native cover, section
+properties, page setup, headers/footers, styles, numbering, and real TOC fields.
+Do not rebuild the cover by manually typing an imitation unless the template is
+unavailable or corrupted. Fill required cover fields minimally, then verify that
+the final `.docx` still contains the template's cover structure and updateable
+directory/outline fields.
+
 
 ## Chinese Coursework Voice Pass
 
@@ -156,10 +182,9 @@ report. This pass should:
   `通过...可知...`;
 - replace catalogue prose such as `包括四项`, `第一...第二...第三...第四...`
   with concrete engineering duties, design decisions, or verification items;
-- for ecological revetment sentences that list `防冲、排水、护坡、生态` or quote
-  principles such as `安全优先、生态兼容`, lower the AI tone by linking local
-  hydrodynamic or seepage features to the design order, then state how ecology
-  fits within flood-conveyance and slope-stability limits;
+- replace broad catalogue sentences with the actual water object, data basis,
+  method, result, decision consequence, or boundary. Do not make a paragraph
+  sound more natural while leaving it unsupported.
 - keep the report formal enough for submission, but avoid over-polished journal
   rhetoric that no longer sounds like undergraduate coursework;
 - preserve all facts, numbers, tables, equations, section labels, template
@@ -192,24 +217,23 @@ guardrails before declaring the artifact final:
   checklist language must be rewritten as formal report prose that states the
   adopted source, formula, assumption, standard basis, or exact chapter/table
   where the basis is provided.
-- Treat every numeric edit as a global data-closure task. When changing a
-  water level, elevation, embedment depth, layer thickness, weighted score,
-  plant-zone boundary or conclusion value, recompute the related
-  geometry/formula and update all matching text, tables,
-  plant zoning, and conclusions together. Search for old values afterward.
-- For hydraulic geometry, explicitly close the arithmetic. Examples: toe
-  bottom elevation = bed elevation - embedment depth; toe top elevation = toe
-  bottom elevation + structure height; flood depth = design flood level - bed
-  elevation; freeboard = crest elevation - control elevation.
-- Spatial/plant zones must form adjacent non-overlapping intervals when
-  elevations are known. Avoid vague descriptions such as "above the toe" when
-  a design flood level, toe top, berm, or crest elevation can define the zone.
+- Treat every numeric edit as a global data-closure task. When changing a water
+  level, discharge, rainfall, elevation, storage, pollutant load, risk index,
+  weighted score, parameter, threshold, or conclusion value, recompute the
+  related formula/table and update all matching text, figures, tables, and
+  conclusions together. Search for old values afterward.
+- When hydraulic or geometric arithmetic is present, explicitly close it with
+  the correct basis, datum, unit, object, and scenario. Examples include water
+  depth, freeboard, stage difference, storage change, runoff coefficient,
+  pollutant-load reduction, and weighted evaluation scores.
+- Spatial zones, scenarios, evaluation units, or periods must be labelled and
+  non-conflicting when they are used to support a result or recommendation.
 - Scheme-comparison tables must include weight basis, scoring scale, formula,
   and at least one substitution for the recommended scheme. After adding this,
   remove any conclusion sentence claiming the scoring process is still missing.
-- Keep hydraulic layer functions precise: geotextile/filter fabric retains
-  soil and blocks fine-particle loss; gravel or cushion layers mainly drain,
-  level, and protect the filter layer. Do not blur these functions.
+- Keep technical functions precise. A material, model, index, parameter, or
+  management measure should be tied to the water process or decision it affects,
+  not described as a generic improvement.
 - Format Chinese references, especially standards, as complete GB/T 7714-style
   entries when possible: responsible organization, standard number, title
   `[S]`, place, publisher, and year.
@@ -427,16 +451,30 @@ supported interactive path. Use native structured questions only when the host
 exposes them reliably in the current session. Use chat fallback only when
 terminal execution is impossible.
 
-For Chinese hydraulic course-design reports, apply a hard-audit gate before any prose polish or final delivery. This gate must explicitly check: weighted-score arithmetic, duplicated calculation sections, blank cover fields, unsupported value or term drift across the same object and calculation basis, empirical toe/scour/filter parameters without defensible boundaries, geotextile laying/overlap details, nonstandard headings such as `水利理由`, and inconsistent GB/T 7714 reference punctuation. These are submission blockers, not style suggestions.
-For hydraulic course-design reports, key calculations must be presented before final delivery. Require a visible formula, substitution, result, and design judgment for calculations that support scheme choice, weighted scores, elevations, dimensions, material parameters, or conclusions. Formatting is governed by the user's explicit requirements and the provided template; do not invent custom fonts, table styles, equation styles, margins, or captions. For Word outputs, render important formulas as standalone native Word equations generated from LaTeX/OMML whenever feasible.
-For ecological revetment and typical-section course designs that already pass
-the basic audit, run an optional engineering-depth diagnosis when the user asks
-to raise the report standard. Look for the underlying failure pattern rather
-than copying prior advice: parameters without mechanism, missing-data jumps,
-undrawable geometry, mixed layer functions, unclear freeboard/safety-margin
-bases, subjective scheme scores, unverified standard currency, construction
-transfer gaps, and ambiguous quantity or left/right-bank scope. Treat these as
-conditional upgrades. Add evidence or bounded assumptions only when the object
-exists and the source basis is available; otherwise record the missing input
-instead of inventing a parameter or standard.
-Also guard against three execution failures: compute numeric substitutions with deterministic tools rather than language-model mental arithmetic; concentrate missing-input boundaries in the calculation-boundary and later verification sections instead of repeating defensive disclaimers; and when one bank refers to the controlling side, still close the reference side's absolute elevations, layer sequence, geometry, and drawing/quantity scope instead of physically omitting it.
+For Chinese water-engineering reports, apply a general audit gate before any
+prose polish or final delivery. This gate must explicitly check: important
+table arithmetic, duplicated calculation or explanation sections, blank required
+template fields, unsupported value or term drift across the same object and
+basis, parameter/source boundaries, nonstandard headings, inconsistent reference
+formatting, and artifact validity. These are submission blockers, not style
+suggestions.
+Key calculations must be presented before final delivery. Require a visible
+formula, substitution, result, and judgment for calculations that support scheme
+choice, weighted scores, water levels, discharges, rainfall/runoff quantities,
+storage, pollutant loads, risk grades, parameters, or conclusions. Formatting is
+governed by the user's explicit requirements and the provided template; do not
+invent custom fonts, table styles, equation styles, margins, or captions. For
+Word outputs, render important formulas as standalone native Word equations
+generated from LaTeX/OMML whenever feasible.
+When the user asks to raise the report standard, run an optional engineering
+depth diagnosis. Look for the underlying failure pattern: object not named,
+method without data source, result without range/grade/baseline, parameter
+without basis, missing-data jumps, subjective scoring, inconsistent units or
+datums, unverified standards, weak transfer boundary, and recommendations
+without a decision target. Add evidence or bounded assumptions only when the
+object exists and the source basis is available; otherwise record the missing
+input instead of inventing a parameter or standard.
+Also guard against two execution failures: compute numeric substitutions with
+deterministic tools rather than language-model mental arithmetic, and
+concentrate missing-input boundaries in the calculation-boundary and later
+verification sections instead of repeating defensive disclaimers.

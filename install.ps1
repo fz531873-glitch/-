@@ -20,6 +20,10 @@ $Mappings = @(
     @{
         Source = "skills\paper-spine-humanize\references\hydraulic-engineering-expression.md"
         Target = ".codex\skills\paper-spine-humanize\references\hydraulic-engineering-expression.md"
+    },
+    @{
+        Source = "skills\docx-editor-cn\SKILL.md"
+        Target = ".codex\skills\docx-editor-cn\SKILL.md"
     }
 )
 
