@@ -6,6 +6,16 @@
 
 这次修改主要补这几块短板。它仍然沿用 PaperSpine 和 Nature-skill 的基础，只把水利课设里反复出现的问题单独收束出来。
 
+## 一键安装
+
+Windows PowerShell 里复制下面这行即可：
+
+```powershell
+iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/-/master/install.ps1 -OutFile "$env:TEMP\install-hydraulic-skill.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydraulic-skill.ps1"
+```
+
+脚本会把仓库里的三份规则文件安装到本地 `~/.codex/skills` 对应位置。已有文件会先备份，安装完成后重新打开 Codex 或开一个新线程即可。
+
 ## 这套规则解决什么
 
 第一，小事走小流程。
