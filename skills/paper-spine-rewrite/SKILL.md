@@ -11,7 +11,11 @@ manuscript improvement.
 ## Required Inputs
 
 - `paper_rewriting_output/paper_spine_config.json`
-- user draft from `draft_path` or the conversation
+- user draft from `draft_path` or the conversation. The draft must be the
+  user's own text or a file the user explicitly asks to revise in place.
+  Another student's report, a personal template, a sample answer, or a
+  teacher-preferred model is a structure-only exemplar by default; route that
+  case to `paper-spine-build` instead of rewriting the exemplar.
 - `paper_rewriting_output/reference_materials/source_index.md`
 - `paper_rewriting_output/research_dossier.md`
 - `paper_rewriting_output/exemplar_learning_dossier.md`
@@ -30,6 +34,14 @@ If `citation_support_bank.md` is missing or shallow, return to
 work, and Discussion claims should draw from that bank when they need
 literature support.
 
+## Script Resolution
+
+This branch has no local `scripts/` folder. Resolve shared guards such as
+`template_leak_guard.py`, `integrity_audit.py`, and `structured_review.py`
+under the active `paper-spine/scripts/` folder. Resolve rewrite-specific
+audits such as `revision_audit.py` under `paper-spine-audit/scripts/`. Use
+expanded absolute paths on Windows when running from the project directory.
+
 ## Required Outputs
 
 - `paper_rewriting_output/original_logic_map.md`
@@ -38,6 +50,15 @@ literature support.
 - `paper_rewriting_output/writing_rationale_matrix.md`
 - `paper_rewriting_output/rewrite_matrix.md`
 - `paper_rewriting_output/logic_transfer_audit.md`
+- `paper_rewriting_output/template_leak_report.md` when structure-only
+  exemplars are present and a final artifact is produced
+- `paper_rewriting_output/format_contract.json` when Word/PDF delivery has
+  guidance, task-book, school, teacher, or template formatting requirements
+- `paper_rewriting_output/word_format_contract_report.md` when a `.docx` final
+  artifact is produced from that contract
+- `paper_rewriting_output/word_merge_plan.json` and
+  `paper_rewriting_output/word_structure_report.md` when final Word content is
+  merged into an official template
 - revised manuscript or revised sections
 - `translation_zh/` package when `translation_package` is `zh` (via `paper-spine-translate`)
 
@@ -50,6 +71,13 @@ Before rewriting, map the existing manuscript in order:
 
 This is required so the rewrite can be compared against the original logic, not
 only against surface wording.
+
+If supporting files include templates or examples, mark their units as
+structure-only exemplars. They may influence the "Current Text Role" or the
+planned section duty, but they are not evidence. Any original unit whose only
+support is an exemplar formula, exemplar number, exemplar object, or exemplar
+conclusion must be rewritten from the user's evidence or moved to a missing
+input/assumption note.
 
 ## Writing Rationale Matrix
 
@@ -162,6 +190,13 @@ Before final output, run a report gap-closure pass:
 
 - calculation presentation: for each calculation that affects a design decision or conclusion, show formula, substitution, result and design judgment. Repeated formulas may be fully shown once and referenced later, but table values must still be recomputed and checked;
 - formatting contract: follow user-provided font, table, heading, caption, margin, reference and equation requirements exactly. If the user has not specified a visible formatting rule, preserve the source/template style rather than inventing a new one;
+- format-contract extraction: before Word delivery, extract all specified
+  formatting rules from requirement sources into
+  `paper_rewriting_output/format_contract.json`, with evidence/source text for
+  each rule. Include page size/orientation, margins, header/footer distances,
+  body and heading fonts,字号/point sizes, line spacing, paragraph spacing,
+  first-line indent, captions, references, equations, page numbers, and TOC
+  rules when specified. Unknown items must remain explicit gaps, not defaults;
 - Word equation rendering: important formulas in `.docx` outputs should be standalone native Word equations generated from LaTeX/OMML. Plain text formulas are acceptable only as a marked fallback when equation rendering is unavailable;
 
 - precision: ambiguous terms must be labelled by basis, datum, scenario, object,
@@ -177,7 +212,7 @@ Before final output, run a report gap-closure pass:
   notes, conclusions, or verification lists;
 - artifact verification: when a Word/PDF output is generated, verify the actual
   file exists and parses/opens, old values are absent, new values occur in the
-  expected places, and obvious encoding damage such as `????` is absent;
+  expected places, and obvious question-mark encoding damage is absent;
 - conclusion discipline: fixable gaps must be repaired in their local chapters,
   not left as future-work confessions in the conclusion.
 
@@ -185,6 +220,14 @@ Before final output, run a report gap-closure pass:
 
 - Rewrite from `writing_rationale_matrix.md`, not by appending sentences to old
   paragraphs.
+- Do not rewrite a structure-only exemplar paragraph by paragraph. If the
+  source draft is not the user's own text, stop and route to build-from-
+  materials. If exemplars are present only as support files, use them for
+  structural moves and granularity only.
+- Keep structure-only exemplars out of `evidence_bank.md`. Do not preserve an
+  exemplar-only formula, constant, threshold, score, object name, place name, or
+  conclusion unless a requirement source, user evidence source, reference
+  source, or labelled course-design assumption independently supports it.
 - A paragraph should survive unchanged only if the matrix explicitly says why it
   already serves the confirmed motivation.
 - Preserve user claims only when supported by user evidence.
@@ -196,14 +239,18 @@ Before final output, run a report gap-closure pass:
 - Keep target-scene style subordinate to the confirmed motivation.
 - `rewrite_matrix.md` must map original units to final units and state whether
   each change is structural, rhetorical, evidence-related, or only language.
+- When structure-only exemplars are present, run
+  the shared `paper-spine/scripts/template_leak_guard.py` or an equivalent comparison before final
+  delivery. Resolve copied exemplar passages, exemplar-only formulas, and
+  exemplar-only numbers before routing to Word, PDF, or LaTeX.
 
 ## Pre-LaTeX Gate
 
 Before routing output to `paper-spine-latex`, run:
 
 ```bash
-python scripts/integrity_audit.py paper_rewriting_output --markdown --write
-python scripts/structured_review.py paper_rewriting_output --dispatch
+python <paper-spine>/scripts/integrity_audit.py paper_rewriting_output --markdown --write
+python <paper-spine>/scripts/structured_review.py paper_rewriting_output --dispatch
 ```
 
 `integrity_audit.md` must show no BLOCKED findings. After dispatch, launch

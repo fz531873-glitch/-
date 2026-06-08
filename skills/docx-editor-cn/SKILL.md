@@ -1,6 +1,6 @@
 ---
 name: docx-editor-cn
-description: "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files). Triggers include: any mention of \"Word doc\", \"word document\", \".docx\", or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a \"report\", \"memo\", \"letter\", \"template\", or similar deliverable as a Word or .docx file, use this skill for the Word artifact, template, formatting, and verification layer. For course-design/report content, calculations, argument structure, or prose quality, coordinate with PaperSpine and Nature skills; do not let this skill become the content-writing owner. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation."
+description: "Use when Codex needs to create, read, edit, convert, or verify Word .docx files, including templates, covers, headings, tables of contents, page numbers, headers/footers, styles, tables, equations, images, tracked changes, comments, find-and-replace, or polished Word deliverables. For reports, course designs, engineering reports, and water-related Word/PDF deliverables, this skill owns the Word artifact, template preservation, formatting, and verification layer; coordinate content, calculations, structure, and prose with PaperSpine and Nature skills. Do not use for PDFs, spreadsheets, Google Docs, or unrelated coding tasks."
 license: Proprietary. LICENSE.txt has complete terms
 ---
 
@@ -20,6 +20,106 @@ Nature writing/polishing for prose quality. Apply this skill after the content,
 calculation, and data-boundary decisions are stable, or as a bounded Word repair
 tool when PaperSpine/Nature has already defined the content change.
 
+## Verification Priority For Chinese Word Deliverables
+
+For Chinese school, course-design, engineering-report, and official-template
+`.docx` deliverables, this skill is the primary Word verification layer.
+Do not use generic document rendering as the QA path when exact school
+formatting, native Word fields, Chinese fonts, cover pages, TOC fields,
+headers/footers, or OMML equations matter.
+
+Use this verification order:
+
+1. Validate the package with `scripts/office/validate.py` or the suite
+   `word_guard.py`.
+2. Apply and check `format_contract.json` with `apply_format_contract.py` and
+   `format_contract_guard.py`.
+3. When an official template is used, check `word_merge_plan.json` with
+   `word_structure_guard.py`.
+4. Reopen/read back the actual `.docx` content and check required headings,
+   key numbers, formulas, tables, old values, and encoding.
+5. For visual appearance, rely on Microsoft Word or WPS opening/export when the
+   user needs a final visual check. Record that no automated visual render was
+   performed unless a Word/WPS-derived PDF or screenshots were actually
+   inspected.
+
+Use Microsoft Word or WPS opening/export, when available to the user, as the
+authoritative final visual check for these Chinese `.docx` files.
+
+## Template-First Delivery Rule
+
+When the user provides an official school, teacher, course, or department
+`.docx` template, use that template as the base artifact. Markdown may be the
+clean content source, but it is not the final formatting authority. Insert or
+merge the final body into the template while preserving native cover fields,
+section properties, page setup, margins, headers/footers, styles, numbering,
+caption fields, equation style, and real TOC fields.
+
+Prefer this order:
+
+1. Edit the existing template `.docx` in place or create a clearly named copy
+   from it.
+2. Replace only the body region that should change, copying paragraph styles
+   from adjacent template paragraphs of the same role.
+3. Convert Markdown blocks into template-native paragraphs, headings, tables,
+   captions, and equations.
+4. Use a from-scratch Markdown-to-Word conversion only when no usable template
+   exists or the user explicitly asks for a new generic Word file.
+
+If Markdown looks good but the converted Word output breaks layout, do not keep
+tuning the generic conversion path. Return to the template-first path, map each
+Markdown block to a template style, then validate the actual `.docx`.
+
+## Guidance-Derived Format Contract
+
+For school reports, course designs, engineering reports, and water-related Word
+deliverables, extract formatting requirements from the guidance document,
+task book, teacher instructions, school rules, or official template before
+final Word generation. Save them as `format_contract.json` next to the output
+or under `paper_rewriting_output/`.
+
+The contract is the source of truth for implementation. Record evidence/source
+for each specified rule and leave unknown items as explicit gaps. Supported
+keys include `page`, `styles`, `toc`, `page_numbers`, `captions`, and
+`equations`; use `scripts/format_contract_guard.py --help` and
+`scripts/apply_format_contract.py --help` for exact CLI usage.
+
+```bash
+python scripts/apply_format_contract.py --input template.docx --contract format_contract.json --output formatted.docx --report apply_format_contract_report.json
+python scripts/format_contract_guard.py --docx formatted.docx --contract format_contract.json --output word_format_contract_report.md
+```
+
+After inserting or merging the final report body, run
+`format_contract_guard.py` again against the final `.docx`. Treat FAIL findings
+as formatting defects, not optional polish. Typical FAIL items include wrong
+page margins, body字号, heading字号, Chinese/English fonts, line spacing,
+paragraph spacing, first-line indent, or heading alignment. If the official
+template conflicts with explicit guidance, the explicit guidance wins and the
+conflict should be recorded in the report.
+
+## Merge Plan And Structure Guard
+
+When merging report body content into an official template, create
+`word_merge_plan.json` before editing the `.docx`. This prevents accidental
+deletion of covers, TOC, section breaks, page fields, headers/footers, or
+teacher-provided placeholder areas.
+
+Use real template anchors when available: bookmarks, content controls, unique
+placeholder text, fixed heading text, or the first required body heading. If no
+safe anchor exists, stop and create a copy with explicit anchors or ask for the
+merge boundary; do not guess by deleting large blocks. Supported merge-plan
+keys include `body_start_anchor`, `body_end_anchor`, `replace_policy`,
+`must_preserve_text`, and `required_fields`.
+
+```bash
+python scripts/word_structure_guard.py --final final.docx --template template.docx --contract format_contract.json --merge-plan word_merge_plan.json --output word_structure_report.md
+```
+
+Treat FAIL findings as submission blockers. This guard checks template part
+preservation, styles, content controls, required Word fields, native equations,
+and merge anchors. It is read-only and should be skipped for non-template,
+generic Word files unless the user asks for strict structural validation.
+
 ## Quick Reference
 
 | Task | Approach |
@@ -30,13 +130,11 @@ tool when PaperSpine/Nature has already defined the content change.
 | Insert 三线表 (XML editing) | `python scripts/table.py unpacked/ "1-1" "标题" --headers … --rows …` |
 | Insert block formula (XML editing) | `python scripts/formula.py unpacked/ "LaTeX" 1 --anchor "锚文本"` |
 
-### Converting .doc to .docx
+### Converting Legacy `.doc`
 
-Legacy `.doc` files must be converted before editing:
-
-```bash
-python scripts/office/soffice.py --headless --convert-to docx document.doc
-```
+Legacy `.doc` files should be converted to `.docx` outside this skill with
+Microsoft Word or WPS before editing. Do not use automated conversion for the
+Chinese official-template workflow.
 
 ### Reading Content
 
@@ -48,20 +146,12 @@ pandoc --track-changes=all document.docx -o output.md
 python scripts/office/unpack.py document.docx unpacked/
 ```
 
-### Converting to Images
-
-```bash
-python scripts/office/soffice.py --headless --convert-to pdf document.docx
-pdftoppm -jpeg -r 150 document.pdf page
-```
-
 ### Accepting Tracked Changes
 
-To produce a clean document with all tracked changes accepted (requires LibreOffice):
+Prefer preserving or editing tracked changes directly in OOXML. If the user
+needs all tracked changes accepted visually, use Microsoft Word or WPS outside
+this skill, then re-run the structural checks.
 
-```bash
-python scripts/accept_changes.py input.docx output.docx
-```
 
 ---
 
@@ -692,7 +782,7 @@ After running `comment.py` (see Step 2), add markers to document.xml. For replie
 - **docx**: `npm install docx` (new documents)
 - **temml**: `npm install temml` (LaTeX → MathML conversion for Word native math)
 - **fast-xml-parser**: `npm install fast-xml-parser` (MathML parsing for docx conversion)
-- **LibreOffice**: PDF conversion (auto-configured for sandboxed environments via `scripts/office/soffice.py`)
+- **Microsoft Word or WPS**: final human visual opening/export for Chinese official-template `.docx` when visual QA is required
 - **Poppler**: `pdftoppm` for images
 
 ---

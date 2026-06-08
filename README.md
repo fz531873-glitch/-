@@ -56,10 +56,10 @@ iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/hydro-writing-core/m
 %USERPROFILE%\.codex\skills
 ```
 
-默认会给已有文件生成带时间戳的 `.bak-...` 备份。若确认不需要备份，可加 `-NoBackup`：
+默认直接覆盖 active skill 文件，不生成备份，避免旧规则继续成为路由入口。若确实需要备份，可加 `-Backup`：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1" -NoBackup
+powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1" -Backup
 ```
 
 安装后重新打开 Codex 或新建线程，让新的 skill 元数据进入上下文。

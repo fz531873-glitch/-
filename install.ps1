@@ -1,5 +1,6 @@
 param(
-    [switch]$NoBackup
+    [switch]$NoBackup,
+    [switch]$Backup
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,12 +37,44 @@ $Mappings = @(
         Target = ".codex\skills\paper-spine\SKILL.md"
     },
     @{
+        Source = "skills\paper-spine\references\suite-map.md"
+        Target = ".codex\skills\paper-spine\references\suite-map.md"
+    },
+    @{
+        Source = "skills\paper-spine\scripts\template_leak_guard.py"
+        Target = ".codex\skills\paper-spine\scripts\template_leak_guard.py"
+    },
+    @{
+        Source = "skills\paper-spine\scripts\word_guard.py"
+        Target = ".codex\skills\paper-spine\scripts\word_guard.py"
+    },
+    @{
         Source = "skills\paper-spine-build\SKILL.md"
         Target = ".codex\skills\paper-spine-build\SKILL.md"
     },
     @{
+        Source = "skills\paper-spine-build\references\rewrite-matrix.md"
+        Target = ".codex\skills\paper-spine-build\references\rewrite-matrix.md"
+    },
+    @{
         Source = "skills\paper-spine-rewrite\SKILL.md"
         Target = ".codex\skills\paper-spine-rewrite\SKILL.md"
+    },
+    @{
+        Source = "skills\paper-spine-rewrite\references\rewrite-matrix.md"
+        Target = ".codex\skills\paper-spine-rewrite\references\rewrite-matrix.md"
+    },
+    @{
+        Source = "skills\paper-spine-audit\SKILL.md"
+        Target = ".codex\skills\paper-spine-audit\SKILL.md"
+    },
+    @{
+        Source = "skills\paper-spine-latex\SKILL.md"
+        Target = ".codex\skills\paper-spine-latex\SKILL.md"
+    },
+    @{
+        Source = "skills\paper-spine-research\references\style-learning-workflow.md"
+        Target = ".codex\skills\paper-spine-research\references\style-learning-workflow.md"
     },
     @{
         Source = "skills\paper-spine-update\scripts\paperspine_update.py"
@@ -62,6 +95,18 @@ $Mappings = @(
     @{
         Source = "skills\docx-editor-cn\SKILL.md"
         Target = ".codex\skills\docx-editor-cn\SKILL.md"
+    },
+    @{
+        Source = "skills\docx-editor-cn\scripts\apply_format_contract.py"
+        Target = ".codex\skills\docx-editor-cn\scripts\apply_format_contract.py"
+    },
+    @{
+        Source = "skills\docx-editor-cn\scripts\format_contract_guard.py"
+        Target = ".codex\skills\docx-editor-cn\scripts\format_contract_guard.py"
+    },
+    @{
+        Source = "skills\docx-editor-cn\scripts\word_structure_guard.py"
+        Target = ".codex\skills\docx-editor-cn\scripts\word_structure_guard.py"
     }
 )
 
@@ -79,10 +124,10 @@ foreach ($Map in $Mappings) {
 
     New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
 
-    if ((Test-Path -LiteralPath $Target) -and (-not $NoBackup)) {
-        $Backup = "$Target.bak-$Stamp"
-        Copy-Item -LiteralPath $Target -Destination $Backup -Force
-        Write-Host "Backed up: $Backup"
+    if ((Test-Path -LiteralPath $Target) -and $Backup -and (-not $NoBackup)) {
+        $BackupPath = "$Target.bak-$Stamp"
+        Copy-Item -LiteralPath $Target -Destination $BackupPath -Force
+        Write-Host "Backed up: $BackupPath"
     }
 
     Copy-Item -LiteralPath $Source -Destination $Target -Force

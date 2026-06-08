@@ -22,6 +22,23 @@ research-writing workflow.
 or manage the PaperSpine installation, route immediately to
 `paper-spine-update` without starting any writing workflow.
 
+## Suite Script Resolution
+
+Resolve PaperSpine scripts from the active skill folders, not from memory or
+archives. For any branch skill, first use the branch's local `scripts/...` file
+when it exists. If it does not exist, shared guards such as
+`template_leak_guard.py`, `integrity_audit.py`, `structured_review.py`,
+`artifact_check.py`, and `word_guard.py` resolve under the active
+`paper-spine/scripts/` folder. Branch-specific guards resolve under their owner
+skill, for example `paper-spine-translate/scripts/translate_guard.py`,
+`paper-spine-citation/scripts/citation_quality_audit.py`, and
+`paper-spine-audit/scripts/revision_audit.py`.
+
+On Chinese Windows, prefer `D:\python\python.exe` when available and pass the
+expanded absolute script path if the current working directory is not the skill
+folder. Do not copy scripts into sibling skills or create backup/archived rule
+files just to satisfy a relative path.
+
 ## Dispatch First
 
 Before reading configuration, launching UI, creating PaperSpine artifacts, or
@@ -101,6 +118,57 @@ full research workflow is needed.
 Never fabricate data, metrics, p-values, datasets, citations, figures, or
 experimental claims. User materials are authoritative for this paper's results.
 External examples teach structure and rhetoric only.
+
+## Source Role Separation
+
+When the user provides many files, classify every file before drafting or
+formatting. Record the classification in `source_map.md` for full workflows, or
+in the repair notes for smaller lanes:
+
+- **Requirement source**: task books, teacher instructions, grading rubrics,
+  formatting requirements, official school templates, and required headings.
+- **User evidence source**: the user's data, group table, measurements,
+  calculations, notes, figures, drafts, and confirmed conclusions.
+- **Structure-only exemplar**: another student's report, a personal template,
+  a sample answer, a strong paper, or a teacher-preferred model used to learn
+  chapter order, method sequence, table style, formula placement, paragraph
+  duty, and conclusion rhythm.
+- **Reference source**: standards, papers, manuals, and citations used to
+  support background, methods, parameters, or discussion.
+- **Unknown or unsafe source**: any file whose role is unclear. Do not use it
+  for final claims until its role is resolved.
+
+Structure-only exemplars are quarantined. They may teach the path and
+granularity of the report, but they must not enter `evidence_bank.md` or
+`claim_register.md` as support for facts, numbers, formulas, parameters,
+object names, locations, conclusions, or recommendations. A formula, constant,
+threshold, score, or conclusion seen only in an exemplar is not allowed in the
+final report. It must be re-derived from the task book, a standard, user data,
+or an explicitly labelled course-design assumption.
+
+For Word/PDF deliverables, create a separate formatting contract from
+requirement sources before final Word work. The contract must be extracted from
+the guidance document, task book, teacher instructions, school formatting
+requirements, or official template, with the source recorded for each rule. It
+must cover every specified item that affects submission appearance: page size,
+orientation, margins, header/footer distance, normal-text Chinese and English
+fonts,字号/point size, line spacing, paragraph before/after spacing, first-line
+indent, heading levels, table captions, figure captions, references, equation
+style, page numbers, and TOC requirements. Do not use default academic formats
+when a guidance file states a different requirement. If the guidance is missing
+or ambiguous, record the missing item and either preserve the official template
+style or ask for the rule before claiming exact compliance.
+
+If the only long "draft" is another student's template or sample and the user
+wants their own report, select `build_from_materials` with that file marked as
+a structure-only exemplar. Use `rewrite_existing` only for text that is truly
+the user's own draft or a file the user explicitly asks to revise in place.
+
+Before final delivery, run a template-leak check whenever structure-only
+exemplars exist. Use `scripts/template_leak_guard.py` when feasible, saving the
+result as `paper_rewriting_output/template_leak_report.md` or an equivalent
+repair note. Treat copied exemplar sentences, exemplar-only formulas, and
+exemplar-only numbers that appear in the final artifact as submission blockers.
 
 ## Report And Hydraulic Writing Hook
 
@@ -310,7 +378,9 @@ targeted Word repair.
    files, or continue the full workflow before the UI has launched or
    explicitly failed. Only fall back to numbered/chat intake if the launch
    returns an error. This constraint does not apply to Lanes 1-3.
-2. Always create or verify `source_map.md`.
+2. Always create or verify `source_map.md`, including source-role
+   classification when multiple user files, templates, examples, task books, or
+   group tables are present.
 3. Always use `paper-spine-research` before choosing the final motivation.
    Research must first index local/default references according to
    `reference_mode` and `reference_paths`; web collection supplements this
@@ -341,10 +411,30 @@ targeted Word repair.
    citation safety, and compile-oriented cleanup.
 12. Always produce final LaTeX source. Compile PDF when a TeX engine is
     available. Markdown alone is not a final PaperSpine output.
-13. If `word_output` is `docx`, produce and check a Word version.
+13. If `word_output` is `docx`, produce and check a Word version. When an
+    official template exists, start from that `.docx` or merge the final body
+    into it while preserving native styles, cover fields, headers/footers,
+    section breaks, numbering, and TOC fields. Do not rely on Markdown-to-Word
+    conversion as the final formatting path when the template is available.
+    For Chinese school, course-design, engineering-report, and water-related
+    Word outputs, use `docx-editor-cn` as the primary verification layer:
+    package/word guard, `format_contract_guard.py`, `word_structure_guard.py`,
+    and actual `.docx` read-back. Do not use the generic document render
+    workflow for these outputs. If visual checking is required, use Microsoft
+    Word or WPS opening/export outside the automated skill path, then re-run
+    structural guards after any manual save/export.
+    Before declaring completion, create or verify
+    `paper_rewriting_output/format_contract.json` from the requirement sources
+    and run the Word format contract guard, saving
+    `paper_rewriting_output/word_format_contract_report.md`. Treat FAIL
+    findings as submission blockers. When the Word output is merged into an
+    official template, also create `paper_rewriting_output/word_merge_plan.json`
+    before editing and run the Word structure guard after saving the final
+    `.docx`, producing `paper_rewriting_output/word_structure_report.md`.
 14. If `output_language` is `en` and `translation_package` is `zh`, use
     `paper-spine-translate` to produce the complete `translation_zh/` package.
-    Run `python scripts/translate_guard.py paper_rewriting_output --markdown --write`
+    Run the active `paper-spine-translate/scripts/translate_guard.py`
+    with `paper_rewriting_output --markdown --write`
     and require PASS. The translation package must cover every required
     intermediate and final artifact with row-by-row translation of large
     tabular files. Summaries are not acceptable.
@@ -397,6 +487,10 @@ Final artifacts:
 - `final_paper/main.tex`
 - `final_paper/paper.pdf` when a TeX compiler is available
 - `final_paper/paper.docx` and `word_report.md` when Word output is requested
+- `format_contract.json` and `word_format_contract_report.md` when Word output
+  is requested and any guidance/template formatting requirement exists
+- `word_merge_plan.json` and `word_structure_report.md` when Word output is
+  merged into an official template
 - `translation_zh/` when English output requests a Chinese translation package
 
 ## Writing Rationale Matrix Requirement
@@ -472,6 +566,9 @@ governed by the user's explicit requirements and the provided template; do not
 invent custom fonts, table styles, equation styles, margins, or captions. For
 Word outputs, render important formulas as standalone native Word equations
 generated from LaTeX/OMML whenever feasible.
+For Chinese official-template Word outputs, use structural `.docx` checks and
+Microsoft Word/WPS visual opening when visual QA is required. Do not route this
+path through automated document conversion.
 When the user asks to raise the report standard, run an optional engineering
 depth diagnosis. Look for the underlying failure pattern: object not named,
 method without data source, result without range/grade/baseline, parameter

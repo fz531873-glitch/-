@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-06-08 report-template and Word verification pass
+
+- 加入多文件报告的 source-role 分离规则：任务书/指导书、用户数据、结构样例、参考资料和未知来源分开处理，结构样例不得进入证据和结论。
+- 新增模板泄漏守卫：最终报告存在结构样例复制句、样例公式或样例独有数字时必须拦截或提示。
+- 新增 Word 格式合同流程：从指导书、任务书、学校要求或官方模板抽取字号、字体、页边距、行距、段间距、目录、页码、公式和题注要求，再用脚本检查。
+- 新增 Word 模板合并结构守卫：合并正文前写 `word_merge_plan.json`，交付前检查封面、页眉页脚、样式、目录域、页码域、SEQ 域和 OMML 公式是否保留。
+- 明确中文学校/课程/工程 `.docx` 交付由 `docx-editor-cn` 做主验证，使用结构化 Word 守卫和实际 `.docx` 回读；不再走通用自动渲染路径。
+- 统一 PaperSpine 分支脚本解析规则，避免 build/rewrite/audit/latex 分支找错 `scripts/...` 或重复实现守卫。
+- 安装脚本默认不生成备份，减少旧规则文件继续成为路由入口；需要时可显式使用 `-Backup`。
+
 ## 2026-06-08 skill performance pass
 
 - 收窄 `hydraulic-writing-router` 的 frontmatter 触发范围：明确排除没有水利/水文/水工对象的普通非水利论文写作。

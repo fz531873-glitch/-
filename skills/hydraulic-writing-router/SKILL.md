@@ -17,6 +17,8 @@ Load downstream files only as needed:
 - `nature-writing/SKILL.md`: drafting or rebuilding sections from confirmed materials and chapter duties.
 - `nature-polishing/SKILL.md`, then its `manifest.yaml` and `always_load`: polish, paragraph logic, Chinese report voice, expression density, or anti-AI regularity.
 - `docx-editor-cn/SKILL.md` or document tools: `.docx` templates, styles, headings, TOC fields, tables, equations, and file verification.
+  For Chinese school/course/engineering Word templates, prefer `docx-editor-cn`
+  over the generic Documents render workflow.
 
 ## Routing Table
 
@@ -35,6 +37,14 @@ Load downstream files only as needed:
 - Nature polishing owns paragraph logic, clarity, rhythm, expression density, and natural Chinese coursework voice after content is stable.
 - Hydraulic core owns object/scale, data source, formula chain, parameter basis, scenario boundary, table/figure evidence, engineering judgment, and consistency by same object + same stage + same basis.
 - Teacher instructions, task books, official templates, and user drafts outrank generic Nature style.
+- When a report request includes task books, guidance files, group tables,
+  official templates, and another person's report/template/sample, route to
+  PaperSpine source mapping first. Classify each file as requirement source,
+  user evidence source, structure-only exemplar, reference source, or
+  unknown/unsafe source. Structure-only exemplars may teach chapter order,
+  calculation sequence, table/formula placement, and formatting habits, but
+  they must not supply final data, formulas, parameters, wording, conclusions,
+  or recommendations.
 
 ## Failure Modes
 
@@ -47,10 +57,15 @@ Treat these as defects:
 - Letting Nature style override a course task book, teacher template, or user data.
 - Hand-imitating a Word cover or TOC when an official template or real field exists.
 - Reporting completion without artifact, encoding, or calculation verification when the task edited files or numbers.
+- Routing Chinese official-template `.docx` verification through automated
+  rendering instead of `docx-editor-cn` structural guards.
 
 ## Completion Gate
 
 - Markdown/config: UTF-8 readback, no replacement characters.
 - Word/PPT/Excel/PDF: inspect the actual artifact structure, not just file existence.
+  For Chinese `.docx` templates, require `docx-editor-cn` structural checks;
+  use Microsoft Word or WPS outside the automated path when visual opening/export
+  is required.
 - Calculations/tables: recompute when numbers support conclusions.
 - Water decisions: keep `formula -> substitution -> result -> design judgment` visible when a calculation drives the judgment.

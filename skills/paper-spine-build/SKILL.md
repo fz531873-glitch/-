@@ -34,6 +34,14 @@ If `citation_support_bank.md` is missing or shallow, return to
 `paper-spine-citation`. From-zero writing still needs literature support for
 background, Introduction/overview, Discussion, limitations, and applications.
 
+## Script Resolution
+
+Use local scripts in `paper-spine-build/scripts/` when they exist. Shared
+delivery guards that are not local, including `template_leak_guard.py`,
+`integrity_audit.py`, `structured_review.py`, and the suite compatibility
+`word_guard.py`, resolve under the active `paper-spine/scripts/` folder. Use
+expanded absolute paths on Windows when running from the project directory.
+
 ## First Pass
 
 Run or emulate:
@@ -44,12 +52,31 @@ python scripts/material_inventory.py <materials_dir> --output-dir paper_rewritin
 
 Create `source_inventory.md` before making claims.
 
+In `source_inventory.md`, assign each material one source role:
+requirement source, user evidence source, structure-only exemplar, reference
+source, or unknown/unsafe source. If the user provides another student's
+report, a personal template, a sample answer, or a teacher-preferred model,
+classify it as a structure-only exemplar unless the user explicitly states that
+its data are also valid for this project. Use exemplars only for chapter order,
+method sequence, table style, formula placement, paragraph duty, and conclusion
+rhythm. Do not copy exemplar prose, formulas, numbers, parameters, locations,
+object names, or conclusions into the user's report.
+
 ## Required Outputs
 
 - `paper_rewriting_output/source_inventory.md`
 - `paper_rewriting_output/evidence_bank.md`
 - `paper_rewriting_output/figure_asset_map.md`
 - `paper_rewriting_output/claim_register.md`
+- `paper_rewriting_output/template_leak_report.md` when structure-only
+  exemplars are present and a final artifact is produced
+- `paper_rewriting_output/format_contract.json` when Word/PDF delivery has
+  guidance, task-book, school, teacher, or template formatting requirements
+- `paper_rewriting_output/word_format_contract_report.md` when a `.docx` final
+  artifact is produced from that contract
+- `paper_rewriting_output/word_merge_plan.json` and
+  `paper_rewriting_output/word_structure_report.md` when final Word content is
+  merged into an official template
 - `paper_rewriting_output/section_blueprints.md`
 - `paper_rewriting_output/writing_rationale_matrix.md`
 - manuscript draft as an intermediate artifact
@@ -174,6 +201,13 @@ Before final output, run a report gap-closure pass:
 
 - calculation presentation: for each calculation that affects a design decision or conclusion, show formula, substitution, result and design judgment. Repeated formulas may be fully shown once and referenced later, but table values must still be recomputed and checked;
 - formatting contract: follow user-provided font, table, heading, caption, margin, reference and equation requirements exactly. If the user has not specified a visible formatting rule, preserve the source/template style rather than inventing a new one;
+- format-contract extraction: before Word delivery, extract all specified
+  formatting rules from requirement sources into
+  `paper_rewriting_output/format_contract.json`, with evidence/source text for
+  each rule. Include page size/orientation, margins, header/footer distances,
+  body and heading fonts,字号/point sizes, line spacing, paragraph spacing,
+  first-line indent, captions, references, equations, page numbers, and TOC
+  rules when specified. Unknown items must remain explicit gaps, not defaults;
 - Word equation rendering: important formulas in `.docx` outputs should be standalone native Word equations generated from LaTeX/OMML. Plain text formulas are acceptable only as a marked fallback when equation rendering is unavailable;
 
 - precision: ambiguous terms must be labelled by basis, datum, scenario, object,
@@ -189,7 +223,7 @@ Before final output, run a report gap-closure pass:
   notes, conclusions, or verification lists;
 - artifact verification: when a Word/PDF output is generated, verify the actual
   file exists and parses/opens, old values are absent, new values occur in the
-  expected places, and obvious encoding damage such as `????` is absent;
+  expected places, and obvious question-mark encoding damage is absent;
 - conclusion discipline: fixable gaps must be repaired in their local chapters,
   not left as future-work confessions in the conclusion.
 
@@ -200,6 +234,17 @@ Before final output, run a report gap-closure pass:
   `cp materials/* ...`; copy or read files with explicitly quoted paths, prefer
   Python `pathlib` or (on Windows) PowerShell for file operations. Unquoted
   globs silently break on such directories.
+- Keep structure-only exemplars out of `evidence_bank.md` and
+  `claim_register.md`. If a section blueprint follows an exemplar, write the
+  transferred feature as a structural duty, for example "show formula before
+  table" or "close each scheme with a design judgment"; do not transfer its
+  sentence, formula value, object name, or conclusion.
+- When a structure-only exemplar is present, the final text must be drafted
+  from the user's evidence and the requirement sources, not by editing the
+  exemplar paragraph by paragraph. Before delivery, run
+  the shared `paper-spine/scripts/template_leak_guard.py` or an equivalent text comparison between the
+  final artifact and the exemplar. Resolve all high-similarity copied passages,
+  exemplar-only formulas, and exemplar-only numbers before formatting.
 - Treat images as potential figure assets, not as verified evidence unless the
   user explains what they show.
 - Use existing document/PDF skills for complex PDF, DOCX, or scanned material
@@ -210,12 +255,25 @@ Before final output, run a report gap-closure pass:
 - Follow `output_language`: `en` or `zh`.
 - Use `citation_support_bank.md` to select citations sentence by sentence; do
   not treat citation candidates as user evidence or insert all candidates.
-- Before routing through `paper-spine-latex`, run `python scripts/integrity_audit.py paper_rewriting_output --markdown --write` and `python scripts/structured_review.py paper_rewriting_output --dispatch`. After dispatch, launch three parallel review sub-agents per `review_prompts/dispatch.md`, then validate independence. Only proceed when all dimensions PASS.
+- Before routing through `paper-spine-latex`, run the shared
+  `paper-spine/scripts/integrity_audit.py` with
+  `paper_rewriting_output --markdown --write` and the shared
+  `paper-spine/scripts/structured_review.py` with
+  `paper_rewriting_output --dispatch`. After dispatch, launch three parallel
+  review sub-agents per `review_prompts/dispatch.md`, then validate
+  independence. Only proceed when all dimensions PASS.
 - Always finish by routing through `paper-spine-latex`. A Markdown draft is not
   a final deliverable for this workflow.
 - Build the final LaTeX project under `paper_rewriting_output/final_paper/`.
 - If `word_output` is `docx`, generate `final_paper/paper.docx` and run
-  `scripts/word_guard.py`, saving `paper_rewriting_output/word_report.md`.
+  the shared `paper-spine/scripts/word_guard.py`, saving
+  `paper_rewriting_output/word_report.md`.
+  Also run the docx format-contract guard against
+  `paper_rewriting_output/format_contract.json` when the contract exists, and
+  save `paper_rewriting_output/word_format_contract_report.md`. If an official
+  template is used, create `paper_rewriting_output/word_merge_plan.json` before
+  editing the template and run the docx structure guard after saving the final
+  file, saving `paper_rewriting_output/word_structure_report.md`.
 - If `output_language` is `en` and `translation_package` is `zh`, create a full
   `paper_rewriting_output/translation_zh/` package. This includes complete
   row-by-row translation of large intermediate files such as
