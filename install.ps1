@@ -41,6 +41,10 @@ $Mappings = @(
         Target = ".codex\skills\paper-spine\references\suite-map.md"
     },
     @{
+        Source = "skills\paper-spine\references\hydraulic-report-workflow.md"
+        Target = ".codex\skills\paper-spine\references\hydraulic-report-workflow.md"
+    },
+    @{
         Source = "skills\paper-spine\scripts\template_leak_guard.py"
         Target = ".codex\skills\paper-spine\scripts\template_leak_guard.py"
     },
@@ -81,16 +85,8 @@ $Mappings = @(
         Target = ".codex\skills\paper-spine-update\scripts\paperspine_update.py"
     },
     @{
-        Source = "skills\nature-writing\SKILL.md"
-        Target = ".codex\skills\nature-writing\SKILL.md"
-    },
-    @{
         Source = "skills\nature-polishing\static\core\hydraulic-engineering.md"
         Target = ".codex\skills\nature-polishing\static\core\hydraulic-engineering.md"
-    },
-    @{
-        Source = "skills\nature-polishing\SKILL.md"
-        Target = ".codex\skills\nature-polishing\SKILL.md"
     },
     @{
         Source = "skills\docx-editor-cn\SKILL.md"

@@ -2,7 +2,7 @@
 
 `hydro-writing-core` 是给 Codex 使用的水利论文、课程报告和工程报告写作增强包。它建立在 PaperSpine 和 Nature 系列写作 skill 之上，重点解决水利方向写作中反复出现的几个问题：写作流程和润色流程抢主导权、局部修改误触发完整论文流程、正文润色掩盖计算或模板缺口、Word 成品和课程模板脱节。
 
-这个仓库不替代 PaperSpine 或 Nature。它做的是边界收束和水利方向个性化：先判断任务属于资料/结构/计算/交付，还是属于起草/润色/表达，再把工作交给合适的 skill。
+这个仓库不替代 PaperSpine 或 Nature。它做的是边界收束和水利方向个性化：先判断任务属于资料/结构/计算/交付，还是属于起草/润色/表达，再把工作交给合适的 skill。安装包不覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`，避免影响原有 Nature 写作/润色入口。
 
 ## 核心分工
 
@@ -24,8 +24,8 @@
 1. 新增 `hydraulic-writing-router`，作为水利写作总入口。
 2. 收窄 router 触发范围：只在明确水利/水文/水工/排水/水环境/课程设计等对象出现时触发，普通非水利论文写作不抢路由。
 3. 把 router 正文压成判定表、边界规则、失败模式和完成门，减少每次触发占用的上下文。
-4. 给 `paper-spine`、`nature-writing`、`nature-polishing` 增加 active-file 契约：调用 skill 时必须读取当前磁盘上的 `SKILL.md`，不能只凭记忆或旧对话工作。
-5. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板和交付；Nature 管起草、润色、表达密度和自然语气。
+4. 给 `paper-spine` 增加 active-file 契约：调用 skill 时必须读取当前磁盘上的 `SKILL.md`，不能只凭记忆或旧对话工作。
+5. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板和交付；Nature 管起草、润色、表达密度和自然语气。本仓库只安装 Nature 的水利核心片段，不覆盖 Nature 入口文件。
 6. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
 7. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
 
@@ -33,7 +33,7 @@
 
 ### 前置条件
 
-这个仓库是增强包，默认你的本机已经安装 PaperSpine、Nature writing、Nature polishing 和 docx-editor-cn。安装脚本会覆盖这些 skill 的入口文件和水利增强规则，但不会安装 Nature/PaperSpine 的完整静态资源库。
+这个仓库是增强包，默认你的本机已经安装 PaperSpine、Nature writing、Nature polishing 和 docx-editor-cn。安装脚本只同步水利路由、PaperSpine/docx 协作边界、报告守卫脚本和 Nature 水利核心片段；不会覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`。
 
 安装前应至少存在：
 
@@ -50,7 +50,7 @@
 iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/hydro-writing-core/master/install.ps1 -OutFile "$env:TEMP\install-hydro-writing-core.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1"
 ```
 
-脚本会把仓库中的 active skill 文件安装到：
+脚本会把仓库中的水利增强文件安装到：
 
 ```text
 %USERPROFILE%\.codex\skills
@@ -73,16 +73,17 @@ skills/
     agents/openai.yaml
   paper-spine/
     SKILL.md
+    references/hydraulic-report-workflow.md
+    references/suite-map.md
+    scripts/template_leak_guard.py
+    scripts/word_guard.py
   paper-spine-build/
     SKILL.md
   paper-spine-rewrite/
     SKILL.md
   paper-spine-update/
     scripts/paperspine_update.py
-  nature-writing/
-    SKILL.md
   nature-polishing/
-    SKILL.md
     static/core/hydraulic-engineering.md
   docx-editor-cn/
     SKILL.md
@@ -106,5 +107,6 @@ Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目
 - active skill 树内无 `SKILL.md.bak*`；
 - active 规则中不再出现旧的 `paper-spine-humanize` 或通用 `humanizer` 路线；
 - 关键 Markdown、YAML、Python 文件可按 UTF-8 回读，无替换字符；
-- `hydraulic-writing-router`、`paper-spine`、`nature-writing`、`nature-polishing` 均包含明确边界或 active-file 契约；
+- `hydraulic-writing-router`、`paper-spine`、`docx-editor-cn` 包含明确边界或 active-file 契约；
+- 安装脚本不再覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`；
 - router frontmatter 包含中文强触发词，正文包含 routing table 和 failure modes。

@@ -119,212 +119,28 @@ Never fabricate data, metrics, p-values, datasets, citations, figures, or
 experimental claims. User materials are authoritative for this paper's results.
 External examples teach structure and rhetoric only.
 
-## Source Role Separation
+## Report Source And Template Hook
 
-When the user provides many files, classify every file before drafting or
-formatting. Record the classification in `source_map.md` for full workflows, or
-in the repair notes for smaller lanes:
+Keep the orchestrator light. Read
+`references/hydraulic-report-workflow.md` only when the current task involves a
+Chinese water/course/engineering report, multiple user files with templates or
+examples, calculation/table closure, template repair, official Word formatting,
+or final Word/PDF delivery.
 
-- **Requirement source**: task books, teacher instructions, grading rubrics,
-  formatting requirements, official school templates, and required headings.
-- **User evidence source**: the user's data, group table, measurements,
-  calculations, notes, figures, drafts, and confirmed conclusions.
-- **Structure-only exemplar**: another student's report, a personal template,
-  a sample answer, a strong paper, or a teacher-preferred model used to learn
-  chapter order, method sequence, table style, formula placement, paragraph
-  duty, and conclusion rhythm.
-- **Reference source**: standards, papers, manuals, and citations used to
-  support background, methods, parameters, or discussion.
-- **Unknown or unsafe source**: any file whose role is unclear. Do not use it
-  for final claims until its role is resolved.
+For those report tasks, classify files into requirement source, user evidence
+source, structure-only exemplar, reference source, and unknown/unsafe source.
+Structure-only exemplars may teach chapter order, calculation sequence, table
+style, formula placement, and conclusion rhythm, but they must not supply final
+facts, formulas, parameters, numbers, wording, conclusions, or recommendations.
 
-Structure-only exemplars are quarantined. They may teach the path and
-granularity of the report, but they must not enter `evidence_bank.md` or
-`claim_register.md` as support for facts, numbers, formulas, parameters,
-object names, locations, conclusions, or recommendations. A formula, constant,
-threshold, score, or conclusion seen only in an exemplar is not allowed in the
-final report. It must be re-derived from the task book, a standard, user data,
-or an explicitly labelled course-design assumption.
+For Word deliverables, extract a formatting contract from requirement sources
+before final Word work. Use `docx-editor-cn` for `.docx` structure, format,
+template, TOC, field, equation, and read-back checks. Run
+`scripts/template_leak_guard.py` whenever structure-only exemplars exist.
 
-For Word/PDF deliverables, create a separate formatting contract from
-requirement sources before final Word work. The contract must be extracted from
-the guidance document, task book, teacher instructions, school formatting
-requirements, or official template, with the source recorded for each rule. It
-must cover every specified item that affects submission appearance: page size,
-orientation, margins, header/footer distance, normal-text Chinese and English
-fonts,字号/point size, line spacing, paragraph before/after spacing, first-line
-indent, heading levels, table captions, figure captions, references, equation
-style, page numbers, and TOC requirements. Do not use default academic formats
-when a guidance file states a different requirement. If the guidance is missing
-or ambiguous, record the missing item and either preserve the official template
-style or ask for the rule before claiming exact compliance.
-
-If the only long "draft" is another student's template or sample and the user
-wants their own report, select `build_from_materials` with that file marked as
-a structure-only exemplar. Use `rewrite_existing` only for text that is truly
-the user's own draft or a file the user explicitly asks to revise in place.
-
-Before final delivery, run a template-leak check whenever structure-only
-exemplars exist. Use `scripts/template_leak_guard.py` when feasible, saving the
-result as `paper_rewriting_output/template_leak_report.md` or an equivalent
-repair note. Treat copied exemplar sentences, exemplar-only formulas, and
-exemplar-only numbers that appear in the final artifact as submission blockers.
-
-## Report And Hydraulic Writing Hook
-
-Use PaperSpine as the default entrypoint and dispatcher for Chinese reports,
-course reports, course designs, course papers, undergraduate homework reports,
-engineering design reports, and water/hydraulic reports. Do not revive a
-separate course-report skill; delegate to the existing branch skills.
-
-For medium and full report tasks, treat the output as a structured report by
-default. Before writing visible prose, create or verify a chapter-duty or
-writing-rationale matrix with: engineering/research question, required basis,
-calculation/table/data link, and final-text gate. The final report should be
-driven by control conditions, local data, formulas or labelled assumptions,
-scheme comparison, section parameters, construction/maintenance controls, and
-bounded conclusions. For local patches, keep this matrix implicit and verify
-only the edited scope plus any affected numbers or file artifacts.
-
-For water-conservancy, hydrology, hydraulic engineering, river engineering,
-drainage, urban flooding, water-environment, water-governance, or water-resource
-topics, use the hydraulic core in Nature polishing/writing as the general domain
-guardrail. It owns water-specific checks such as data-source trace, table
-calculation trace, parameter/source boundaries, scenario and scale clarity,
-data-scope consistency, table/figure evidence closure, and artifact
-verification. Object-specific checks apply only when the current materials
-contain those objects.
-
-When the user provides a local folder of water-conservancy papers, use it as the
-exemplar corpus for the final output. Before writing visible prose for medium or
-full tasks, extract a style profile from multiple papers: chapter organization,
-paragraph rhythm, method-detail level, result/table explanation, engineering-use
-sentences, conclusion pattern, and reference style. The corpus teaches writing
-form and water-paper rhythm; it does not supply facts for the user's project
-unless the user explicitly cites a paper as evidence.
-
-For the user's `论文搭建` corpus specifically, prioritize normative expression:
-object first, pressure second, method/index/model third, result grade/range/
-distribution/trend fourth, engineering use and boundary last. The learned
-standard is plain, evidence-dense, and reproducible; do not turn it into ornate
-journal prose or topic-specific constraints.
-
-Do not let internal planning language enter the report body. Sentences such as
-`本报告先...`, `后文按照...展开`, `论证重点转向...`, and `避免把...处理成...`
-belong in planning artifacts unless they are converted into a local engineering
-judgment with data, formula, parameter source, design consequence, or boundary.
-Actual writing or polishing work must still be routed to `nature-writing` or
-`nature-polishing` as appropriate.
-For long Chinese hydraulic course-design reports, avoid a single-pass rewrite
-that tries to solve calculation, structure, wording, references, and formatting
-at once. Use a staged agentic loop:
-
-1. Source and template map: identify the task book, school template, required
-   headings, section data, tables, and deliverables.
-2. Audit report: compute/check numbers with tools, list data/geometry/table
-   issues, template conflicts, missing inputs, and artifact risks. Do not
-   rewrite prose yet.
-3. Engineering repair: fix calculations, data closure, geometry, scheme scoring,
-   and required structure while preserving the template.
-4. Nature expression pass: only after the audit issues are handled, run
-   `nature-polishing` with the hydraulic core for rhythm, terminology, and
-   natural coursework expression.
-5. Artifact verification: reopen/read the actual Word/PDF/Markdown output and
-   check paragraph/table counts, key numbers, old values, headings, encoding,
-   and required template elements.
-
-When the user provides an official school or teacher Word template, treat that
-template as the base artifact, not as loose visual inspiration. Start the report
-from the template when possible; if a polished report already exists, merge the
-report body into the template while preserving the native cover, section
-properties, page setup, headers/footers, styles, numbering, and real TOC fields.
-Do not rebuild the cover by manually typing an imitation unless the template is
-unavailable or corrupted. Fill required cover fields minimally, then verify that
-the final `.docx` still contains the template's cover structure and updateable
-directory/outline fields.
-
-
-## Chinese Coursework Voice Pass
-
-After the report's structure, data closure, and engineering boundaries are
-stable, run a light student-voice pass when the user asks to reduce AI traces,
-make the tone more natural, or polish a Chinese undergraduate coursework
-report. This pass should:
-
-- shorten overlong sentences where the meaning does not require the length;
-- reduce repeated sentence openings such as `本报告...`, `本文...`, and
-  `通过...可知...`;
-- replace catalogue prose such as `包括四项`, `第一...第二...第三...第四...`
-  with concrete engineering duties, design decisions, or verification items;
-- replace broad catalogue sentences with the actual water object, data basis,
-  method, result, decision consequence, or boundary. Do not make a paragraph
-  sound more natural while leaving it unsupported.
-- keep the report formal enough for submission, but avoid over-polished journal
-  rhetoric that no longer sounds like undergraduate coursework;
-- preserve all facts, numbers, tables, equations, section labels, template
-  fields, and engineering conclusions.
-
-Do not apply this as a cosmetic pass before the evidence and parameter checks
-are stable. After the rewrite, verify that key numeric claims and table counts
-still match the source artifact.
-
-## Chinese Coursework Template And Regression Guardrails
-
-For Chinese undergraduate reports and course-design documents, apply these
-guardrails before declaring the artifact final:
-
-- If the user provides another student's template, assignment example, or
-  teacher-preferred sample, treat it as the primary style and structure model.
-  First extract its chapter order, paragraph duties, calculation sequence,
-  table style, reference style, formatting habits, and conclusion pattern.
-  Then write the user's content by following that template's method and
-  granularity, without copying its wording or fabricating data.
-- Do not put process, self-audit, or planning language in the final body. Keep
-  such language in `writing_rationale_matrix.md`, audit notes, or the chat.
-  Before final delivery, scan the artifact for phrases such as `本报告先`,
-  `后文`, `论证重点`, `技术路线`, `主线`, `展开`, `避免把`, `若继续完善`,
-  `自查`, and `还需补足`; delete them or convert them into local engineering
-  judgments with data, formula, consequence, or boundary.
-- Treat teacher-facing prompts and self-check instructions as submission
-  blockers, even when they sound reasonable. Phrases such as `涉及权重、评分和参数取值
-  的表格，均需...`, `避免表格数据脱离计算过程`, `应优先补足...`, or similar
-  checklist language must be rewritten as formal report prose that states the
-  adopted source, formula, assumption, standard basis, or exact chapter/table
-  where the basis is provided.
-- Treat every numeric edit as a global data-closure task. When changing a water
-  level, discharge, rainfall, elevation, storage, pollutant load, risk index,
-  weighted score, parameter, threshold, or conclusion value, recompute the
-  related formula/table and update all matching text, figures, tables, and
-  conclusions together. Search for old values afterward.
-- When hydraulic or geometric arithmetic is present, explicitly close it with
-  the correct basis, datum, unit, object, and scenario. Examples include water
-  depth, freeboard, stage difference, storage change, runoff coefficient,
-  pollutant-load reduction, and weighted evaluation scores.
-- Spatial zones, scenarios, evaluation units, or periods must be labelled and
-  non-conflicting when they are used to support a result or recommendation.
-- Scheme-comparison tables must include weight basis, scoring scale, formula,
-  and at least one substitution for the recommended scheme. After adding this,
-  remove any conclusion sentence claiming the scoring process is still missing.
-- Keep technical functions precise. A material, model, index, parameter, or
-  management measure should be tied to the water process or decision it affects,
-  not described as a generic improvement.
-- Format Chinese references, especially standards, as complete GB/T 7714-style
-  entries when possible: responsible organization, standard number, title
-  `[S]`, place, publisher, and year.
-- References to course task books, school formatting requirements, teacher
-  handouts, templates, and local design briefs must also be completed before
-  delivery, not only national standards. Prefer: responsible organization,
-  document title, document type such as `[R]`, and year, with normal spacing
-  after punctuation. Do not leave entries like `学院.题名[R].2026.` when the
-  template or task material identifies the issuing unit.
-- If the user says to revise the final/current/original report in place, edit
-  that file directly and verify it after saving. Create a new version only when
-  the user asks for a separate copy or the edit is high-risk enough to require a
-  clearly named backup.
-- For Chinese deliverables on Windows, avoid writing Chinese正文 through
-  PowerShell heredocs or inline command strings. Use UTF-8 files, base64
-  payloads, or structured XML/zip editing, then reopen/read back the artifact
-  and check for mojibake, question-mark corruption, old values, and table count.
+For local patches and ordinary non-water PaperSpine work, do not load the
+hydraulic report reference unless the patch exposes a calculation, source,
+template, or artifact risk.
 
 ## Required Configuration
 

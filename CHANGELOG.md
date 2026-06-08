@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-08 coordination boundary pass
+
+- 安装脚本不再覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`，避免影响原有 Nature 写作/润色入口和加载性能。
+- 从仓库中移除 Nature 两个入口副本，只保留 `nature-polishing/static/core/hydraulic-engineering.md` 作为水利领域核心片段。
+- 将 PaperSpine 主入口中的长水利报告细则下沉到 `paper-spine/references/hydraulic-report-workflow.md`，仅在水利课程/工程报告、模板合并、Word/PDF 交付或多文件报告场景按需读取。
+- PaperSpine 主入口继续只做分派：小修不启动完整流程，Nature 只负责正文起草/润色，`docx-editor-cn` 负责 Word 模板和格式验证。
+
 ## 2026-06-08 report-template and Word verification pass
 
 - 加入多文件报告的 source-role 分离规则：任务书/指导书、用户数据、结构样例、参考资料和未知来源分开处理，结构样例不得进入证据和结论。
