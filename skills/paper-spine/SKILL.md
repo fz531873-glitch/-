@@ -5,6 +5,17 @@ description: Main PaperSpine dispatcher for papers, reports, coursework, course 
 
 # PaperSpine Orchestrator
 
+## Active-File Contract
+
+When this skill is invoked, read this active `SKILL.md` from disk before
+applying PaperSpine rules. Do not use prior memory, old backup files, or inactive
+copies as the rule source. If the task is water-conservancy, hydrology, hydraulic
+engineering, river, drainage, water-resource, water-environment, or Chinese
+water coursework, coordinate through `hydraulic-writing-router` when available:
+PaperSpine owns workflow, sources, structure, calculations, report repair, and
+artifact verification; Nature skills own drafting and polishing passes after the
+content gate is stable.
+
 Use this skill as the suite entrypoint and lead dispatcher. Its first job is
 to classify the request, then route the work to the smallest branch that can
 finish it safely: local edit, section polish, report repair, or full

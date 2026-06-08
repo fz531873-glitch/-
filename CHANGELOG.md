@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-06-08 router cleanup and GitHub sync
+
+- 新增 `hydraulic-writing-router`，作为水利、水文、水资源、水工、排水、水环境、课程报告、课程设计、工程报告、论文写作和 Word/PDF 交付的个人总入口。
+- 明确 PaperSpine 与 Nature 的分工：PaperSpine 负责资料、结构、计算、模板、修复和最终验证；Nature writing 负责起草或重建；Nature polishing 负责段落逻辑、表达密度、中文自然语气和降 AI 痕迹式修正。
+- 在 `paper-spine`、`nature-writing`、`nature-polishing` 中加入 active-file 契约：调用 skill 时必须读取当前磁盘上的 active `SKILL.md`，不能只凭记忆、旧对话或备份文件工作。
+- 清理旧自然化路线：`paper-spine-build` 和 `paper-spine-rewrite` 不再路由到 `paper-spine-humanize` 或通用 humanizer，统一在内容和计算稳定后调用 `nature-polishing`。
+- 更新 `paper-spine-update` 脚本中的套件列表，避免后续更新重新引入旧 humanize skill。
+- 重写 README，将项目定位为 PaperSpine + Nature 的水利方向写作路由增强包，并说明安装、分工、文件结构和验证结果。
+- 安装脚本新增前置条件检查，避免把增强包安装到缺少 PaperSpine/Nature/docx 基础资源的空环境中。
+
 ## 2026-06-06 nature-only-polishing update
 
 - 按用户偏好改为只用 Nature-skill 承担润色、表达密度和中文课程设计语气处理，不再让通用 `humanizer` 参与水利写作包的默认路线。

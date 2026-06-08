@@ -1,40 +1,83 @@
-# PaperSpine + Nature 水利课设增强规则
+# Hydro Writing Core
 
-这套规则来自一次真实的水利课程设计整理。原来的 PaperSpine 和 Nature-skill 已经能处理论文结构、段落逻辑和学术润色，但放到本科水利课设里，还会遇到几个很实际的问题。
+`hydro-writing-core` 是给 Codex 使用的水利论文、课程报告和工程报告写作增强包。它建立在 PaperSpine 和 Nature 系列写作 skill 之上，重点解决水利方向写作中反复出现的几个问题：写作流程和润色流程抢主导权、局部修改误触发完整论文流程、正文润色掩盖计算或模板缺口、Word 成品和课程模板脱节。
 
-比如，只改一句报告正文时，完整 PaperSpine 流程显得太重；润色正文时，模型容易只换词，不去看这句话背后的工程关系；写生态护岸时，文字会把防冲、排水、护坡、生态并列摆开，却没有说明哪个是安全边界，哪个是后续布置；老师给了学校 Word 模板时，封面和目录又容易被手工仿写，丢掉原生格式。
+这个仓库不替代 PaperSpine 或 Nature。它做的是边界收束和水利方向个性化：先判断任务属于资料/结构/计算/交付，还是属于起草/润色/表达，再把工作交给合适的 skill。
 
-这次修改主要补这几块短板。它仍然沿用 PaperSpine 和 Nature-skill 的基础，只把水利课设里反复出现的问题单独收束出来。
+## 核心分工
 
-## 一键安装
+安装后，水利、水文、水资源、河流、水工、排水、城市内涝、水环境、水治理、课程报告、课程设计、工程报告、论文写作和 Word/PDF 交付类任务，优先触发 `hydraulic-writing-router`。
 
-Windows PowerShell 里复制下面这行即可：
+分工如下：
 
-```powershell
-iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/-/master/install.ps1 -OutFile "$env:TEMP\install-hydraulic-skill.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydraulic-skill.ps1"
+- `hydraulic-writing-router`：个人水利写作总入口，负责协调 PaperSpine、Nature 写作/润色、水利核心规则和文档工具。
+- `paper-spine`：负责资料读取、任务书和模板约束、章节职责、计算表格闭合、报告修复、完整工作流和最终交付验证。
+- `nature-writing`：负责在材料、章节职责和证据边界明确后起草或重建正文。
+- `nature-polishing`：负责段落逻辑、学术清晰度、表达密度、中文自然语气和降 AI 痕迹式的表达修正。
+- `nature-polishing/static/core/hydraulic-engineering.md`：负责水利专业边界，如对象尺度、公式链、参数依据、情景边界、表图证据和工程判断。
+- `docx-editor-cn`：负责 Word 文件结构、模板保留、样式、标题、目录域、表格、公式和文件级验证。
+
+## 本次结构调整
+
+这版把原来分散在 PaperSpine、Nature 和水利增强规则里的要求收成一个清晰入口：
+
+1. 新增 `hydraulic-writing-router`，作为水利写作总入口。
+2. 给 `paper-spine`、`nature-writing`、`nature-polishing` 增加 active-file 契约：调用 skill 时必须读取当前磁盘上的 `SKILL.md`，不能只凭记忆或旧对话工作。
+3. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板和交付；Nature 管起草、润色、表达密度和自然语气。
+4. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
+5. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
+
+## 安装
+
+### 前置条件
+
+这个仓库是增强包，默认你的本机已经安装 PaperSpine、Nature writing、Nature polishing 和 docx-editor-cn。安装脚本会覆盖这些 skill 的入口文件和水利增强规则，但不会安装 Nature/PaperSpine 的完整静态资源库。
+
+安装前应至少存在：
+
+```text
+%USERPROFILE%\.codex\skills\paper-spine\SKILL.md
+%USERPROFILE%\.codex\skills\nature-writing\manifest.yaml
+%USERPROFILE%\.codex\skills\nature-polishing\manifest.yaml
+%USERPROFILE%\.codex\skills\docx-editor-cn\SKILL.md
 ```
 
-脚本会把仓库里的规则文件安装到本地 `~/.codex/skills` 对应位置。已有文件会先备份，安装完成后重新打开 Codex 或开一个新线程即可。
+在 Windows PowerShell 中运行：
 
-## 这套规则解决什么
+```powershell
+iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/hydro-writing-core/master/install.ps1 -OutFile "$env:TEMP\install-hydro-writing-core.ps1"; powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1"
+```
 
-第一，小事走小流程。
+脚本会把仓库中的 active skill 文件安装到：
 
-一句话、小段落、局部 Word 修改，不再启动完整 intake、research、citation 和 LaTeX 流程。PaperSpine 先判断任务大小，再决定交给哪个分支处理。
+```text
+%USERPROFILE%\.codex\skills
+```
 
-第二，水利表达要回到工程顺序。
+默认会给已有文件生成带时间戳的 `.bak-...` 备份。若确认不需要备份，可加 `-NoBackup`：
 
-生态护岸报告里，安全、抗冲、稳定、排水、反滤通常要先讲清楚。植物、景观、亲水这些内容可以写，但要放在行洪安全和边坡稳定的边界内。
+```powershell
+powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1" -NoBackup
+```
 
-第三，润色不能只靠换词。
+安装后重新打开 Codex 或新建线程，让新的 skill 元数据进入上下文。
 
-很多句子读起来像 AI，问题常出在写法太像提纲说明：它在解释“文章怎么写”，没有落到具体断面、计算、材料、边界和设计后果上。规则会优先把这类句子改成工程判断。
-
-## 文件放在哪里
+## 文件结构
 
 ```text
 skills/
+  hydraulic-writing-router/
+    SKILL.md
+    agents/openai.yaml
   paper-spine/
+    SKILL.md
+  paper-spine-build/
+    SKILL.md
+  paper-spine-rewrite/
+    SKILL.md
+  paper-spine-update/
+    scripts/paperspine_update.py
+  nature-writing/
     SKILL.md
   nature-polishing/
     SKILL.md
@@ -43,60 +86,22 @@ skills/
     SKILL.md
 ```
 
-`paper-spine/SKILL.md` 负责分派任务。它先判断是局部修改、章节润色、报告修复，还是整篇写作。只有整篇报告、结构重建、大范围重写这类任务，才进入完整 PaperSpine 流程。
+## 使用原则
 
-`nature-polishing/SKILL.md` 放 Nature 润色路由边界。它说明 Nature 负责段落逻辑、学术清晰度和表达密度，但不接管端到端交付；发现计算、参数或模板问题时要退回 PaperSpine。
+局部改句、短段润色、小范围 Word 修补，不启动完整 PaperSpine 工作流。整篇报告、结构重建、从材料生成正文、课程设计成品交付，走 PaperSpine 完整流程。
 
-`nature-polishing/static/core/hydraulic-engineering.md` 放水利专业边界。它提醒模型检查水位、高程、岸脚、反滤层、坡面稳定、植物分区、表格计算和图纸一致性。
+水利正文不能只做同义改写。涉及数字、表格、高程、水位、坡脚、反滤层、植物分区、模型参数或方案比较时，先检查数据和工程边界，再润色句子。
 
-`docx-editor-cn/SKILL.md` 放 Word 成品处理规则。学校或老师提供 `.docx` 模板时，优先从模板开始写，或把正文合并回模板，保留原生封面、节设置、页眉页脚、样式、编号和真实目录域。
+老师给出的任务书、格式规范、Word 模板和已有样稿优先级高于通用 Nature 风格。Nature 风格只用于提高表达清晰度、证据密度和边界意识，不能压过课程任务或凭空补数据。
 
-## 分派方式
+Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目录域和表格结构应尽量保留，不用手打方式仿制封面。
 
-PaperSpine 现在先分四档。
+## 验证
 
-- 局部修改：一句话、一小段、错别字、Word 局部替换、窄范围润色。
-- 章节润色：一节或几段文字，结构基本定了，只需要理顺逻辑和语气。
-- 报告修复：表格计算、高程关系、参考文献、模板、Word/PDF、图纸一致性。
-- 完整流程：整篇报告、整篇重写、从材料生成正文、重建论文逻辑。
+本次同步前后做过这些本地检查：
 
-轻量任务可以交给 `gpt-5.4`。错别字、编码扫描、旧值搜索这类机械检查可以交给 `gpt-5.4-mini`。整篇结构、控制动机、最终审校仍然留给主模型。
-
-## 一个小例子
-
-原句：
-
-> 该断面的重点放在岸脚防冲、反滤排水、坡面稳定和生态布置四个环节，生态措施需服从行洪安全和岸坡稳定要求。
-
-这句话没有明显错误，但更像清单。改写时可以把工程顺序写出来：
-
-> 结合上述水文动力条件，MJ6断面设计先处理岸脚防冲、反滤排水和坡面稳定；生态布置在不影响行洪安全和边坡整体稳定的基础上展开。
-
-这样读起来更像报告正文。它先交代水文动力条件，再落到防冲、排水、护坡，最后说明生态布置的边界。
-
-## 使用时注意
-
-局部改文不要开完整 PaperSpine。
-
-水利报告里有数字、表格、高程、坡脚、反滤层、植物分区时，先看数据能不能闭合，再润色句子。
-
-Nature 润色时少用口号式原则。能写清“为什么先防冲、为什么要排水、生态布置受什么限制”，比堆几个抽象词更有用。
-
-老师给了模板、任务书或样稿时，先按这些材料走。Nature 风格只用来提高表达质量，不能压过课程设计的格式和任务要求。
-
-学校给了 Word 模板时，模板是母版，不是参考图片。封面、页眉页脚、节属性、目录域和样式要尽量保留原生结构；已经写好的报告可以把正文迁入模板，或把模板原生封面迁入报告，但不能再靠手打复刻封面。
-
-## 验证情况
-
-本地已经做过这些检查：
-
-- UTF-8 回读正常；
-- 未发现典型 mojibake 字符、替换字符或私有区异常字符；
-- `paper-spine` 通过 `quick_validate.py`；
-- 主入口包含轻量通道、完整流程通道和模型分派规则。
-
-## 基础
-
-这套规则基于 PaperSpine 和 Nature-skill 扩展。
-
-PaperSpine 提供报告和论文的主流程。Nature-skill 提供学术表达、水利专业边界、段落润色和中文课程设计语气处理。这里补充的是水利课设场景里的本地经验：小修走轻量通道，整篇写作走完整流程，水利表达尽量贴住计算、断面和工程边界。
+- active `SKILL.md` 名称无重复；
+- active skill 树内无 `SKILL.md.bak*`；
+- active 规则中不再出现旧的 `paper-spine-humanize` 或通用 `humanizer` 路线；
+- 关键 Markdown、YAML、Python 文件可按 UTF-8 回读，无替换字符；
+- `hydraulic-writing-router`、`paper-spine`、`nature-writing`、`nature-polishing` 均包含明确边界或 active-file 契约。

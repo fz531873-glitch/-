@@ -8,10 +8,48 @@ $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $CodexSkills = Join-Path $HOME ".codex\skills"
 $Stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 
+$RequiredExisting = @(
+    ".codex\skills\paper-spine\SKILL.md",
+    ".codex\skills\nature-writing\manifest.yaml",
+    ".codex\skills\nature-polishing\manifest.yaml",
+    ".codex\skills\docx-editor-cn\SKILL.md"
+)
+
+foreach ($Required in $RequiredExisting) {
+    $RequiredPath = Join-Path $HOME $Required
+    if (-not (Test-Path -LiteralPath $RequiredPath)) {
+        throw "Missing prerequisite: $RequiredPath. Install the base PaperSpine/Nature/docx skills before applying hydro-writing-core."
+    }
+}
+
 $Mappings = @(
+    @{
+        Source = "skills\hydraulic-writing-router\SKILL.md"
+        Target = ".codex\skills\hydraulic-writing-router\SKILL.md"
+    },
+    @{
+        Source = "skills\hydraulic-writing-router\agents\openai.yaml"
+        Target = ".codex\skills\hydraulic-writing-router\agents\openai.yaml"
+    },
     @{
         Source = "skills\paper-spine\SKILL.md"
         Target = ".codex\skills\paper-spine\SKILL.md"
+    },
+    @{
+        Source = "skills\paper-spine-build\SKILL.md"
+        Target = ".codex\skills\paper-spine-build\SKILL.md"
+    },
+    @{
+        Source = "skills\paper-spine-rewrite\SKILL.md"
+        Target = ".codex\skills\paper-spine-rewrite\SKILL.md"
+    },
+    @{
+        Source = "skills\paper-spine-update\scripts\paperspine_update.py"
+        Target = ".codex\skills\paper-spine-update\scripts\paperspine_update.py"
+    },
+    @{
+        Source = "skills\nature-writing\SKILL.md"
+        Target = ".codex\skills\nature-writing\SKILL.md"
     },
     @{
         Source = "skills\nature-polishing\static\core\hydraulic-engineering.md"
@@ -27,7 +65,7 @@ $Mappings = @(
     }
 )
 
-Write-Host "Installing PaperSpine + Nature hydraulic skill extensions..."
+Write-Host "Installing Hydro Writing Core skill extensions..."
 Write-Host "Codex skills directory: $CodexSkills"
 
 foreach ($Map in $Mappings) {

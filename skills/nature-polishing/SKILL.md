@@ -5,6 +5,19 @@ description: Polish, restructure, translate, or typeset academic prose using Nat
 
 # Nature-Style Academic Polishing — Router
 
+## Active-File Contract
+
+When this skill is invoked, read this active `SKILL.md` from disk before
+polishing. Do not apply Nature rules from memory alone. Then read
+`manifest.yaml` and every path listed under `always_load`; load only the
+additional fragments required by the detected axes. For water-conservancy,
+hydrology, hydraulic engineering, river, drainage, water-resource,
+water-environment, or Chinese water coursework tasks, coordinate through
+`hydraulic-writing-router` when available. Nature polishing owns paragraph
+logic, academic clarity, expression density, and natural Chinese coursework
+voice; PaperSpine owns workflow, calculations, data closure, template conflicts,
+and final artifact verification.
+
 This skill is split into two layers:
 
 - A **static layer** under `static/` that holds versioned, reusable content fragments (core principles, paper-type playbooks, per-section guidance, language-specific rules, per-journal style).
