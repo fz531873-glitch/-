@@ -9,6 +9,53 @@ $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $CodexSkills = Join-Path $HOME ".codex\skills"
 $Stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 
+function Write-Utf8NoBomIfChanged {
+    param(
+        [string]$Path,
+        [string]$Text,
+        [string]$Message
+    )
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return
+    }
+
+    $Current = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+    if ($Current -ne $Text) {
+        $Encoding = [System.Text.UTF8Encoding]::new($false)
+        [System.IO.File]::WriteAllText($Path, $Text, $Encoding)
+        Write-Host $Message
+    }
+}
+
+function Remove-HydroNatureOverlay {
+    $WritingSkill = Join-Path $HOME ".codex\skills\nature-writing\SKILL.md"
+    $PolishingSkill = Join-Path $HOME ".codex\skills\nature-polishing\SKILL.md"
+    $PolishingManifest = Join-Path $HOME ".codex\skills\nature-polishing\manifest.yaml"
+
+    if (Test-Path -LiteralPath $WritingSkill) {
+        $Text = Get-Content -LiteralPath $WritingSkill -Raw -Encoding UTF8
+        $Text = $Text.Replace(" For water-conservancy, hydrology, hydraulic engineering, water resources, river, drainage, urban flooding, and water-environment topics, use the hydraulic-engineering core as the domain guardrail.", "")
+        $Text = [regex]::Replace($Text, "(?s) For water-related papers,.*?chapter duties are confirmed\.", "")
+        $Text = [regex]::Replace($Text, "(?s)\r?\nIf the request is for a Chinese report, course report, course design, course.*?do not copy text or import unsupported claims\.\r?\n", "`r`n")
+        Write-Utf8NoBomIfChanged -Path $WritingSkill -Text $Text -Message "Cleaned old hydro overlay from Nature writing entrypoint."
+    }
+
+    if (Test-Path -LiteralPath $PolishingSkill) {
+        $Text = Get-Content -LiteralPath $PolishingSkill -Raw -Encoding UTF8
+        $Text = [regex]::Replace($Text, ", and on Chinese reports, course reports, course designs, course papers, engineering reports, .*? water/hydraulic academic or coursework prose\. For water-conservancy topics, use the hydraulic-engineering core directly\.", ".")
+        $Text = [regex]::Replace($Text, "(?s) For water-related papers,.*?after content is stable\.", "")
+        $Text = [regex]::Replace($Text, "(?s)\r?\nIf the request is for a Chinese report, course report, course design, course.*?do not copy text or import unsupported claims\.\r?\n", "`r`n")
+        Write-Utf8NoBomIfChanged -Path $PolishingSkill -Text $Text -Message "Cleaned old hydro overlay from Nature polishing entrypoint."
+    }
+
+    if (Test-Path -LiteralPath $PolishingManifest) {
+        $Text = Get-Content -LiteralPath $PolishingManifest -Raw -Encoding UTF8
+        $Text = [regex]::Replace($Text, "(?m)^\s+- static/core/hydraulic-engineering\.md\r?\n", "")
+        Write-Utf8NoBomIfChanged -Path $PolishingManifest -Text $Text -Message "Removed hydro core from Nature polishing always_load."
+    }
+}
+
 $RequiredExisting = @(
     ".codex\skills\paper-spine\SKILL.md",
     ".codex\skills\nature-writing\manifest.yaml",
@@ -130,12 +177,22 @@ foreach ($Map in $Mappings) {
     Write-Host "Installed: $Target"
 }
 
+Remove-HydroNatureOverlay
+
 $BadFound = $false
-foreach ($Map in $Mappings) {
-    $Target = Join-Path $HOME $Map.Target
+$ValidationTargets = @($Mappings | ForEach-Object { Join-Path $HOME $_.Target })
+$ValidationTargets += @(
+    (Join-Path $HOME ".codex\skills\nature-writing\SKILL.md"),
+    (Join-Path $HOME ".codex\skills\nature-polishing\SKILL.md"),
+    (Join-Path $HOME ".codex\skills\nature-polishing\manifest.yaml")
+)
+foreach ($Target in $ValidationTargets) {
+    if (-not (Test-Path -LiteralPath $Target)) {
+        continue
+    }
     $Text = Get-Content -LiteralPath $Target -Raw -Encoding UTF8
-    $HasMojibake = $Text.Contains([char]0x9356) -or $Text.Contains([char]0x7ed7)
-    $HasReplacementChar = $Text.Contains([char]0xFFFD)
+    $HasMojibake = ($null -ne $Text) -and ($Text.Contains([char]0x9356) -or $Text.Contains([char]0x7ed7))
+    $HasReplacementChar = ($null -ne $Text) -and $Text.Contains([char]0xFFFD)
     if ($HasMojibake -or $HasReplacementChar) {
         Write-Warning "Possible mojibake found in: $Target"
         $BadFound = $true

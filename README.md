@@ -33,7 +33,7 @@
 
 ### 前置条件
 
-这个仓库是增强包，默认你的本机已经安装 PaperSpine、Nature writing、Nature polishing 和 docx-editor-cn。安装脚本只同步水利路由、PaperSpine/docx 协作边界、报告守卫脚本和 Nature 水利核心片段；不会覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`。
+这个仓库是增强包，默认你的本机已经安装 PaperSpine、Nature writing、Nature polishing 和 docx-editor-cn。安装脚本只同步水利路由、PaperSpine/docx 协作边界、报告守卫脚本和 Nature 水利核心片段；不会覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`。如果旧版增强包曾把水利规则写进 Nature 入口或 `nature-polishing/manifest.yaml` 的 `always_load`，安装脚本会把这部分旧 overlay 清掉。
 
 安装前应至少存在：
 
