@@ -10,13 +10,10 @@ description: Polish, restructure, translate, or typeset academic prose using Nat
 When this skill is invoked, read this active `SKILL.md` from disk before
 polishing. Do not apply Nature rules from memory alone. Then read
 `manifest.yaml` and every path listed under `always_load`; load only the
-additional fragments required by the detected axes. For water-conservancy,
-hydrology, hydraulic engineering, river, drainage, water-resource,
-water-environment, or Chinese water coursework tasks, coordinate through
-`hydraulic-writing-router` when available. Nature polishing owns paragraph
-logic, academic clarity, expression density, and natural Chinese coursework
-voice; PaperSpine owns workflow, calculations, data closure, template conflicts,
-and final artifact verification.
+additional fragments required by the detected axes. For water-related papers,
+reports, coursework, or Word/PDF deliverables, obey `hydraulic-writing-router`
+when available. This skill polishes paragraph logic, clarity, rhythm,
+expression density, and natural Chinese voice after content is stable.
 
 This skill is split into two layers:
 

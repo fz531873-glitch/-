@@ -12,13 +12,10 @@ author: Community contribution, refactored into static/dynamic layers
 When this skill is invoked, read this active `SKILL.md` from disk before
 drafting. Do not apply Nature writing rules from memory alone. Then read
 `manifest.yaml` and every path listed under `always_load`; load only the
-additional fragments required by the detected axes. For water-conservancy,
-hydrology, hydraulic engineering, river, drainage, water-resource,
-water-environment, or Chinese water coursework tasks, coordinate through
-`hydraulic-writing-router` when available. Nature writing owns drafting or
-rebuilding prose from confirmed materials and chapter duties; PaperSpine owns
-workflow, calculations, data closure, template conflicts, and final artifact
-verification.
+additional fragments required by the detected axes. For water-related papers,
+reports, coursework, or Word/PDF deliverables, obey `hydraulic-writing-router`
+when available. This skill drafts or rebuilds prose after materials, evidence,
+and chapter duties are confirmed.
 
 This skill is split into two layers:
 

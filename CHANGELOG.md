@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-08 skill performance pass
+
+- 收窄 `hydraulic-writing-router` 的 frontmatter 触发范围：明确排除没有水利/水文/水工对象的普通非水利论文写作。
+- 将中文强触发词写入 router description，包括 水利、水文、水资源、水工、河流、排水、城市内涝、水环境、水治理、课程报告、课程设计、工程报告。
+- 将 router 正文改为更轻的判定结构：live-read rule、routing table、boundary rules、failure modes、completion gate。
+- 压缩 `paper-spine`、`nature-writing`、`nature-polishing` 的水利协作说明，下游 skill 只保留 active-file 契约和服从 router 的短指针，减少重复上下文。
+- 更新 `hydraulic-writing-router/agents/openai.yaml` 的 UI 提示，让手动调用更贴近水利中文任务。
+
 ## 2026-06-08 router cleanup and GitHub sync
 
 - 新增 `hydraulic-writing-router`，作为水利、水文、水资源、水工、排水、水环境、课程报告、课程设计、工程报告、论文写作和 Word/PDF 交付的个人总入口。

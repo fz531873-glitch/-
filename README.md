@@ -22,10 +22,12 @@
 这版把原来分散在 PaperSpine、Nature 和水利增强规则里的要求收成一个清晰入口：
 
 1. 新增 `hydraulic-writing-router`，作为水利写作总入口。
-2. 给 `paper-spine`、`nature-writing`、`nature-polishing` 增加 active-file 契约：调用 skill 时必须读取当前磁盘上的 `SKILL.md`，不能只凭记忆或旧对话工作。
-3. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板和交付；Nature 管起草、润色、表达密度和自然语气。
-4. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
-5. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
+2. 收窄 router 触发范围：只在明确水利/水文/水工/排水/水环境/课程设计等对象出现时触发，普通非水利论文写作不抢路由。
+3. 把 router 正文压成判定表、边界规则、失败模式和完成门，减少每次触发占用的上下文。
+4. 给 `paper-spine`、`nature-writing`、`nature-polishing` 增加 active-file 契约：调用 skill 时必须读取当前磁盘上的 `SKILL.md`，不能只凭记忆或旧对话工作。
+5. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板和交付；Nature 管起草、润色、表达密度和自然语气。
+6. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
+7. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
 
 ## 安装
 
@@ -104,4 +106,5 @@ Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目
 - active skill 树内无 `SKILL.md.bak*`；
 - active 规则中不再出现旧的 `paper-spine-humanize` 或通用 `humanizer` 路线；
 - 关键 Markdown、YAML、Python 文件可按 UTF-8 回读，无替换字符；
-- `hydraulic-writing-router`、`paper-spine`、`nature-writing`、`nature-polishing` 均包含明确边界或 active-file 契约。
+- `hydraulic-writing-router`、`paper-spine`、`nature-writing`、`nature-polishing` 均包含明确边界或 active-file 契约；
+- router frontmatter 包含中文强触发词，正文包含 routing table 和 failure modes。
