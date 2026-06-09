@@ -27,14 +27,16 @@ only as a suite compatibility fallback when this local guard is unavailable.
 ## Required Outputs
 
 - updated LaTeX project; for from-materials builds, use
-  `paper_rewriting_output/final_paper/main.tex`
+  `final_paper/main.tex` or `paper_rewriting_output/final_paper/main.tex`
+  according to the current PaperSpine artifact layout
 - compiled PDF when a TeX engine is available; for from-materials builds, use
-  `paper_rewriting_output/final_paper/paper.pdf`
+  the same `final_paper/` directory as the source
 - `paper_rewriting_output/latex_report.md`
 - `paper_rewriting_output/final_artifact_manifest.md` when producing final
   deliverables
-- optional `paper_rewriting_output/final_paper/paper.docx` plus
-  `paper_rewriting_output/word_report.md`
+- optional `.docx` plus `paper_rewriting_output/word_report.md` only when
+  `word_output=docx`, the user explicitly asks for Word, or the requirement
+  source makes `.docx` mandatory
 
 ## Rules
 
@@ -56,6 +58,11 @@ only as a suite compatibility fallback when this local guard is unavailable.
 - If compilation fails despite an available engine, keep the `.tex`, write the
   first fatal error to `latex_report.md`, and do not claim the artifact check
   passes.
+- For Chinese water course designs and engineering reports, direct LaTeX is the
+  default final source route. Convert school format requirements into a LaTeX
+  format contract: cover fields, native `\tableofcontents`, chapter/section
+  hierarchy, equation/table/figure numbering, page headers and page numbers.
+  Word conversion is a separate explicit branch, not the default final step.
 - If generating Word output, use pandoc from the `final_paper/` directory. When
   the manuscript uses BibTeX citations, resolve them with citeproc so `\cite`
   commands render as formatted references instead of leaking raw LaTeX:

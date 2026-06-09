@@ -1,6 +1,6 @@
 # Hydro Writing Core
 
-`hydro-writing-core` 是给 Codex 使用的水利论文、课程报告和工程报告写作增强包。它建立在 PaperSpine 和 Nature 系列写作 skill 之上，重点解决水利方向写作中反复出现的几个问题：写作流程和润色流程抢主导权、局部修改误触发完整论文流程、正文润色掩盖计算或模板缺口、Word 成品和课程模板脱节。
+`hydro-writing-core` 是给 Codex 使用的水利论文、课程报告和工程报告写作增强包。它建立在 PaperSpine 和 Nature 系列写作 skill 之上，重点解决水利方向写作中反复出现的几个问题：写作流程和润色流程抢主导权、局部修改误触发完整论文流程、正文润色掩盖计算或模板缺口、Word/PDF 格式修补过早压过内容和计算。
 
 这个仓库不替代 PaperSpine 或 Nature。它做的是边界收束和水利方向个性化：先判断任务属于资料/结构/计算/交付，还是属于起草/润色/表达，再把工作交给合适的 skill。安装包不覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`，避免影响原有 Nature 写作/润色入口。
 
@@ -11,11 +11,11 @@
 分工如下：
 
 - `hydraulic-writing-router`：个人水利写作总入口，负责协调 PaperSpine、Nature 写作/润色、水利核心规则和文档工具。
-- `paper-spine`：负责资料读取、任务书和模板约束、章节职责、计算表格闭合、报告修复、完整工作流和最终交付验证。
-- `nature-writing`：负责在材料、章节职责和证据边界明确后起草或重建正文。
-- `nature-polishing`：负责段落逻辑、学术清晰度、表达密度、中文自然语气和降 AI 痕迹式的表达修正。
+- `paper-spine`：负责资料读取、任务书和模板约束、章节职责、计算表格闭合、报告修复、完整工作流、最终 LaTeX 源文件和交付验证。
+- `nature-writing`：负责在材料、计算边界、章节职责和证据边界明确后起草或重建正文。完整中文水利课程设计和工程报告中，Nature writing 是正文 owner。
+- `nature-polishing`：负责段落逻辑、学术清晰度、表达密度、中文自然语气和降 AI 痕迹式的表达修正。完整报告应在正文稳定后运行这一轮。
 - `nature-polishing/static/core/hydraulic-engineering.md`：负责水利专业边界，如对象尺度、公式链、参数依据、情景边界、表图证据和工程判断。
-- `docx-editor-cn`：负责 Word 文件结构、模板保留、样式、标题、目录域、表格、公式和文件级验证。
+- `docx-editor-cn`：只在用户明确要求 `.docx` 或要求源强制 Word 交付时负责 Word 文件结构、模板保留、样式、标题、目录域、表格、公式和文件级验证。
 
 ## 本次结构调整
 
@@ -25,9 +25,10 @@
 2. 收窄 router 触发范围：只在明确水利/水文/水工/排水/水环境/课程设计等对象出现时触发，普通非水利论文写作不抢路由。
 3. 把 router 正文压成判定表、边界规则、失败模式和完成门，减少每次触发占用的上下文。
 4. 给 `paper-spine` 增加 active-file 契约：调用 skill 时必须读取当前磁盘上的 `SKILL.md`，不能只凭记忆或旧对话工作。
-5. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板和交付；Nature 管起草、润色、表达密度和自然语气。本仓库只安装 Nature 的水利核心片段，不覆盖 Nature 入口文件。
-6. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
-7. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
+5. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板、LaTeX 源文件和交付验证；Nature 管正文起草、润色、表达密度和自然语气。本仓库只安装 Nature 的水利核心片段，不覆盖 Nature 入口文件。
+6. 默认把水利课程设计和工程报告产物收束到 `final_paper/main.tex`，可编译时生成 PDF；Word 只有在用户明确要求或任务要求强制 `.docx` 时作为额外分支。
+7. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
+8. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
 
 ## 安装
 
@@ -87,17 +88,21 @@ skills/
     static/core/hydraulic-engineering.md
   docx-editor-cn/
     SKILL.md
+examples/
+  latex-first-course-design-workflow.md
 ```
 
 ## 使用原则
 
 局部改句、短段润色、小范围 Word 修补，不启动完整 PaperSpine 工作流。整篇报告、结构重建、从材料生成正文、课程设计成品交付，走 PaperSpine 完整流程。
 
+水利课程设计和工程报告默认走 LaTeX-first：先用 PaperSpine 读取任务书、指导书、格式要求、规范和用户数据，生成来源分类、计算边界、证据库、章节蓝图和写作矩阵；再由 Nature writing 起草正文，Nature polishing 做表达和段落逻辑；最后汇总到 `final_paper/main.tex`，能编译则生成 PDF。除非用户明确要求 Word 或要求源强制 `.docx`，不要把最后一步改成 LaTeX-to-Word。
+
 水利正文不能只做同义改写。涉及数字、表格、高程、水位、坡脚、反滤层、植物分区、模型参数或方案比较时，先检查数据和工程边界，再润色句子。
 
 老师给出的任务书、格式规范、Word 模板和已有样稿优先级高于通用 Nature 风格。Nature 风格只用于提高表达清晰度、证据密度和边界意识，不能压过课程任务或凭空补数据。
 
-Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目录域和表格结构应尽量保留，不用手打方式仿制封面。
+Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目录域和表格结构应尽量保留，不用手打方式仿制封面。这个规则只在 Word 分支生效；LaTeX-first 分支应把格式要求转换成 LaTeX 格式契约，并使用原生 `\tableofcontents`。
 
 ## 验证
 
@@ -110,3 +115,4 @@ Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目
 - `hydraulic-writing-router`、`paper-spine`、`docx-editor-cn` 包含明确边界或 active-file 契约；
 - 安装脚本不再覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`；
 - router frontmatter 包含中文强触发词，正文包含 routing table 和 failure modes。
+- LaTeX-first 水利课程设计样例已验证：`main.tex` UTF-8 读回正常，无占位符和乱码；PDF 可编译，抽取文本能读到封面、目录、章节和关键计算值。

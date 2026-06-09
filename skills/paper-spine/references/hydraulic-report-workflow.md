@@ -63,12 +63,39 @@ For long Chinese hydraulic course-design reports, use a staged loop:
    rewrite prose yet.
 3. Engineering repair: fix calculations, data closure, geometry, scheme scoring,
    and required structure while preserving the template.
-4. Nature expression pass: only after audit issues are handled, run
-   `nature-polishing` with the hydraulic core for rhythm, terminology, and
-   natural coursework expression.
-5. Artifact verification: reopen/read the actual Word/PDF/Markdown output and
+4. Nature writing pass: only after source roles, calculations, chapter duties,
+   required tables, and evidence boundaries are stable, run `nature-writing` to
+   draft or rebuild the report body. This pass owns the final body prose for
+   full Chinese water course reports and engineering reports.
+5. Nature polishing pass: after the body prose is stable, run
+   `nature-polishing` with the hydraulic core for paragraph logic, rhythm,
+   terminology, and natural coursework expression.
+6. Artifact verification: reopen/read the actual LaTeX/PDF/Word/Markdown output and
    check paragraph/table counts, key numbers, old values, headings, encoding,
    and required template elements.
+
+## LaTeX-First Output Route
+
+For Chinese water course designs and engineering reports, use direct LaTeX as
+the default source route unless the user explicitly asks for Word or a
+requirement source makes `.docx` mandatory.
+
+The workflow must still follow PaperSpine first: read task books, guidance
+documents, school formatting files, standards, and user data; then create or
+verify `source_inventory.md`, `calculation_boundary.md`, `evidence_bank.md`,
+`section_blueprints.md`, and `writing_rationale_matrix.md`. Nature writing and
+polishing run after these boundaries are closed. Only then assemble
+`final_paper/main.tex`.
+
+Convert school formatting requirements into a LaTeX format contract: cover
+fields, abstract and keywords, native `\tableofcontents`, chapter/section
+levels, formula/table/figure numbering, headers, page numbers, and reference
+format. Compile PDF when a TeX engine is available. If compilation fails or no
+engine is available, keep `main.tex`, record the reason in `latex_report.md`,
+and do not claim the PDF check passes.
+
+Do not run a final LaTeX-to-Word conversion as a default cleanup step. Word is a
+separate branch owned by `docx-editor-cn`.
 
 ## Hydraulic Writing Boundary
 

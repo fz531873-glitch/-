@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-09 LaTeX-first Nature ownership pass
+
+- 将中文水利课程设计和工程报告的默认产物路线改为 LaTeX-first：`final_paper/main.tex` 是最终源文件，PDF 是可编译时的检查/交付产物。
+- 明确 PaperSpine 与 Nature 的分工：PaperSpine 负责资料读取、来源分类、计算边界、章节职责、格式合同、LaTeX 组装和交付验证；Nature writing 负责正文起草/重建，Nature polishing 负责最终段落逻辑和中文报告语气。
+- 将 Word 输出收窄为显式或强制分支：只有用户明确要求 `.docx` 或任务源要求 Word 时，才调用 `docx-editor-cn` 保留学校封面、目录域、样式、页眉页脚和公式结构。
+- 新增 `examples/latex-first-course-design-workflow.md`，记录课程设计从任务书/指导书读取、证据闭合、Nature 正文接管到 LaTeX/PDF 验证的公开流程，不包含私人课程材料。
+
 ## 2026-06-08 coordination boundary pass
 
 - 安装脚本不再覆盖 `nature-writing/SKILL.md` 或 `nature-polishing/SKILL.md`，避免影响原有 Nature 写作/润色入口和加载性能。

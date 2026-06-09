@@ -11,7 +11,9 @@ When this skill is invoked, read this active `SKILL.md` from disk before
 applying PaperSpine rules. Do not use memory, old backups, or archived copies as
 the rule source. For water-related papers, reports, coursework, or Word/PDF
 deliverables, obey `hydraulic-writing-router` when available: PaperSpine owns
-workflow, sources, structure, calculations, repair, and artifact verification.
+workflow, sources, structure, calculations, repair, and artifact verification,
+while Nature writing/polishing owns final body prose after the content boundary
+is stable.
 
 Use this skill as the suite entrypoint and lead dispatcher. Its first job is
 to classify the request, then route the work to the smallest branch that can
@@ -71,7 +73,9 @@ or cross-file consistency risk. If the user says the task is a big project,
 use the full workflow.
 
 Branch ownership is simple: `nature-writing` drafts or rebuilds prose;
-`nature-polishing` restructures, polishes, and handles Chinese report voice;
+for full Chinese water course reports and engineering reports, it must own the
+body-section drafting after source and calculation closure. `nature-polishing`
+restructures, polishes, and handles Chinese report voice before final assembly;
 `docx-editor-cn` owns Word files; spreadsheet,
 presentation, citation, LaTeX, translation, and audit branch skills own their
 respective artifacts.
