@@ -28,7 +28,7 @@
 5. 明确 PaperSpine 与 Nature 的边界：PaperSpine 管流程、资料、计算、结构、模板、LaTeX 源文件和交付验证；Nature 管正文起草、润色、表达密度和自然语气。本仓库只安装 Nature 的水利核心片段，不覆盖 Nature 入口文件。
 6. 默认把水利课程设计和工程报告产物收束到 `final_paper/main.tex`，可编译时生成 PDF；Word 只有在用户明确要求或任务要求强制 `.docx` 时作为额外分支。
 7. 移除旧的 `paper-spine-humanize`/通用 humanizer 路线，中文自然化统一交给 `nature-polishing`。
-8. 安装包只保留 active skill 文件，不再保留历史备份、重复副本或归档目录。
+8. 仓库包内只保留 active skill 文件，不再保留历史备份、重复副本或归档目录；安装到本机时会按需给被覆盖文件生成备份。
 
 ## 安装
 
@@ -45,6 +45,8 @@
 %USERPROFILE%\.codex\skills\docx-editor-cn\SKILL.md
 ```
 
+安装脚本还会检查一组从基础 skill 继承来的支持文件，例如 `paper-spine` 的审计脚本、`paper-spine-ui` 的启动脚本，以及 `docx-editor-cn/scripts/office/`、`new_doc.js`、`table.py`、`formula.py` 等 Word 支持脚本。这些文件缺失时脚本会给出警告，但不会阻止安装；后续用到对应流程时，应先修复基础 PaperSpine/docx skill。
+
 在 Windows PowerShell 中运行：
 
 ```powershell
@@ -57,10 +59,16 @@ iwr -UseB https://raw.githubusercontent.com/fz531873-glitch/hydro-writing-core/m
 %USERPROFILE%\.codex\skills
 ```
 
-默认直接覆盖 active skill 文件，不生成备份，避免旧规则继续成为路由入口。若确实需要备份，可加 `-Backup`：
+安装脚本默认会在覆盖已有 active skill 文件前生成同目录备份，备份名形如 `SKILL.md.bak-20260609-183000`。若只想预览会改哪些文件，可先运行：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1" -Backup
+powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1" -DryRun
+```
+
+若明确不需要备份，可加 `-NoBackup`。若要在临时目录中做隔离验证，可用 `-TargetRoot` 指定安装根目录：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File "$env:TEMP\install-hydro-writing-core.ps1" -TargetRoot "$env:TEMP\hydro-test-root" -DryRun
 ```
 
 安装后重新打开 Codex 或新建线程，让新的 skill 元数据进入上下文。
@@ -109,7 +117,7 @@ Word 模板是母版。封面、页眉页脚、节属性、样式、编号、目
 本次同步前后做过这些本地检查：
 
 - active `SKILL.md` 名称无重复；
-- active skill 树内无 `SKILL.md.bak*`；
+- 仓库 active skill 树内无 `SKILL.md.bak*`；
 - active 规则中不再出现旧的 `paper-spine-humanize` 或通用 `humanizer` 路线；
 - 关键 Markdown、YAML、Python 文件可按 UTF-8 回读，无替换字符；
 - `hydraulic-writing-router`、`paper-spine`、`docx-editor-cn` 包含明确边界或 active-file 契约；

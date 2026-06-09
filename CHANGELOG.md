@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-09 installer safety pass
+
+- 安装脚本新增 `-DryRun`，可预览会安装、覆盖和备份的文件，不修改 active skill。
+- 安装脚本新增 `-TargetRoot`，支持把增强包安装到临时根目录中做隔离验证。
+- 覆盖已有 active skill 文件前默认生成 `.bak-时间戳` 备份；需要无备份覆盖时显式使用 `-NoBackup`。
+- 前置检查分成两层：最低 PaperSpine/Nature/docx 入口缺失会阻止安装，继承的基础支持脚本缺失会给出警告，提醒对应流程可能不可用。
+- 编码校验从单个汉字硬判改为替换字符和常见 UTF-8 误解码片段检测，减少中文 Windows 下的误判。
+
 ## 2026-06-09 LaTeX-first Nature ownership pass
 
 - 将中文水利课程设计和工程报告的默认产物路线改为 LaTeX-first：`final_paper/main.tex` 是最终源文件，PDF 是可编译时的检查/交付产物。
