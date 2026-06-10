@@ -1,8 +1,8 @@
 interface:
   display_name: "Hydraulic Writing Router"
-  short_description: "Route water-writing tasks across PaperSpine, Nature, and document tools"
+  short_description: "Route water-writing tasks through Markdown content review and LaTeX/PDF final assembly"
   brand_color: "#0F766E"
-  default_prompt: "Use $hydraulic-writing-router for 水利/水文/水工/课程设计/工程报告/Word-PDF writing tasks."
+  default_prompt: "Use $hydraulic-writing-router for 水利/水文/水工/课程设计/工程报告 writing tasks; review content in Markdown first, then assemble LaTeX/PDF."
 
 policy:
   allow_implicit_invocation: true

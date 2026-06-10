@@ -1,8 +1,7 @@
-# LaTeX-First Course Design Workflow
+# Content-First LaTeX/PDF Course Design Workflow
 
 This example documents the expected workflow for Chinese hydraulic course
-design reports when the user wants a stable LaTeX source first and does not ask
-for Word output.
+design reports.
 
 ## Goal
 
@@ -10,12 +9,14 @@ Produce a complete water-engineering course design report with:
 
 - PaperSpine controlling source roles, task requirements, calculation
   boundaries, chapter duties, format constraints, and artifact verification.
-- Nature writing controlling the report body prose after the content boundary
-  is stable.
+- Nature writing controlling report body prose after the content boundary is
+  stable.
 - Nature polishing controlling paragraph logic and Chinese coursework voice.
-- `final_paper/main.tex` as the final source artifact.
-- PDF only as a compile/check artifact when a TeX engine is available.
-- Word only when explicitly requested or required by the task source.
+- Markdown or source text as the fast content-review surface.
+- `confirmed_content.md` as the accepted content checkpoint.
+- `paper_rewriting_output/final_paper/main.tex` as the final source artifact.
+- `paper_rewriting_output/final_paper/paper.pdf` as the compiled artifact when
+  a TeX engine is available.
 
 ## Source Intake
 
@@ -38,7 +39,7 @@ Create or verify these before drafting:
 - `paper_rewriting_output/evidence_bank.md`
 - `paper_rewriting_output/section_blueprints.md`
 - `paper_rewriting_output/writing_rationale_matrix.md`
-- `paper_rewriting_output/latex_report.md`
+- `paper_rewriting_output/content_draft.md`
 - `paper_rewriting_output/final_artifact_manifest.md`
 
 ## Content Pass
@@ -66,11 +67,16 @@ Important calculations should visibly follow:
 formula -> substitution -> result -> design judgement
 ```
 
+Review the content directly in Markdown or source text. When the user confirms
+the text, save or mark the accepted version as `confirmed_content.md`.
+
 ## LaTeX Assembly
+
+Final formatting starts only after `confirmed_content.md` exists.
 
 Convert format requirements into LaTeX:
 
-- cover fields become a `titlepage`;
+- cover fields use the real school cover image/PDF/path provided by the user;
 - table of contents uses native `\tableofcontents`;
 - chapters and sections follow the school hierarchy;
 - equations, tables, and figures use native numbering;
@@ -78,24 +84,25 @@ Convert format requirements into LaTeX:
 - references are written in a consistent Chinese standard style.
 
 Compile PDF when possible. If compilation is unavailable or fails, keep
-`final_paper/main.tex`, record the reason, and do not claim the PDF check
-passes.
+`paper_rewriting_output/final_paper/main.tex`, record the reason, and do not
+claim the PDF check passes.
 
 ## Completion Checks
 
 Before delivery:
 
-- read `main.tex` as UTF-8;
+- read `confirmed_content.md` and `main.tex` as UTF-8;
 - search for leftover placeholders such as `@@` or template prompts;
 - search for mojibake and replacement characters;
 - recompute key values that support conclusions;
+- require native `\tableofcontents` when a table of contents is needed;
 - compile PDF when possible;
-- extract or inspect PDF text for cover, TOC, headings, and key values;
+- inspect PDF text for cover, TOC, headings, and key values when PDF exists;
 - record all final artifacts in `final_artifact_manifest.md`.
 
 ## Non-goals
 
 - Do not upload or publish task books, private templates, student reports, or
   generated course-design answers as part of this core workflow package.
-- Do not convert LaTeX to Word unless Word output is explicitly requested or
-  required by the source materials.
+- Do not run format conversion or external rendering just to check whether the
+  report content is good.

@@ -77,15 +77,15 @@ function Remove-HydroNatureOverlay {
 
 $RequiredExisting = @(
     ".codex\skills\paper-spine\SKILL.md",
+    ".codex\skills\paper-spine-latex\SKILL.md",
     ".codex\skills\nature-writing\manifest.yaml",
-    ".codex\skills\nature-polishing\manifest.yaml",
-    ".codex\skills\docx-editor-cn\SKILL.md"
+    ".codex\skills\nature-polishing\manifest.yaml"
 )
 
 foreach ($Required in $RequiredExisting) {
     $RequiredPath = Join-Path $InstallRoot $Required
     if (-not (Test-Path -LiteralPath $RequiredPath)) {
-        throw "Missing prerequisite: $RequiredPath. Install the base PaperSpine/Nature/docx skills before applying hydro-writing-core."
+        throw "Missing prerequisite: $RequiredPath. Install the base PaperSpine/Nature skills before applying hydro-writing-core."
     }
 }
 
@@ -93,14 +93,7 @@ $InheritedSupportFiles = @(
     ".codex\skills\paper-spine\scripts\integrity_audit.py",
     ".codex\skills\paper-spine\scripts\structured_review.py",
     ".codex\skills\paper-spine\scripts\artifact_check.py",
-    ".codex\skills\paper-spine-ui\scripts\launch_paperspine_ui.ps1",
-    ".codex\skills\docx-editor-cn\scripts\office\validate.py",
-    ".codex\skills\docx-editor-cn\scripts\office\unpack.py",
-    ".codex\skills\docx-editor-cn\scripts\office\pack.py",
-    ".codex\skills\docx-editor-cn\scripts\new_doc.js",
-    ".codex\skills\docx-editor-cn\scripts\table.py",
-    ".codex\skills\docx-editor-cn\scripts\formula.py",
-    ".codex\skills\docx-editor-cn\scripts\mathml-to-docx.js"
+    ".codex\skills\paper-spine-ui\scripts\launch_paperspine_ui.ps1"
 )
 
 $MissingInherited = @()
@@ -112,7 +105,7 @@ foreach ($Inherited in $InheritedSupportFiles) {
 }
 
 if ($MissingInherited.Count -gt 0) {
-    Write-Warning "Some inherited base-skill support files are missing. Hydro Writing Core can still install, but workflows that reference these files may fail until the base PaperSpine/docx skills are repaired."
+    Write-Warning "Some inherited base-skill support files are missing. Hydro Writing Core can still install, but workflows that reference these files may fail until the base PaperSpine skills are repaired."
     foreach ($Path in $MissingInherited) {
         Write-Warning "Missing inherited support: $Path"
     }
@@ -128,76 +121,8 @@ $Mappings = @(
         Target = ".codex\skills\hydraulic-writing-router\agents\openai.yaml"
     },
     @{
-        Source = "skills\paper-spine\SKILL.md"
-        Target = ".codex\skills\paper-spine\SKILL.md"
-    },
-    @{
-        Source = "skills\paper-spine\references\suite-map.md"
-        Target = ".codex\skills\paper-spine\references\suite-map.md"
-    },
-    @{
-        Source = "skills\paper-spine\references\hydraulic-report-workflow.md"
-        Target = ".codex\skills\paper-spine\references\hydraulic-report-workflow.md"
-    },
-    @{
-        Source = "skills\paper-spine\scripts\template_leak_guard.py"
-        Target = ".codex\skills\paper-spine\scripts\template_leak_guard.py"
-    },
-    @{
-        Source = "skills\paper-spine\scripts\word_guard.py"
-        Target = ".codex\skills\paper-spine\scripts\word_guard.py"
-    },
-    @{
-        Source = "skills\paper-spine-build\SKILL.md"
-        Target = ".codex\skills\paper-spine-build\SKILL.md"
-    },
-    @{
-        Source = "skills\paper-spine-build\references\rewrite-matrix.md"
-        Target = ".codex\skills\paper-spine-build\references\rewrite-matrix.md"
-    },
-    @{
-        Source = "skills\paper-spine-rewrite\SKILL.md"
-        Target = ".codex\skills\paper-spine-rewrite\SKILL.md"
-    },
-    @{
-        Source = "skills\paper-spine-rewrite\references\rewrite-matrix.md"
-        Target = ".codex\skills\paper-spine-rewrite\references\rewrite-matrix.md"
-    },
-    @{
-        Source = "skills\paper-spine-audit\SKILL.md"
-        Target = ".codex\skills\paper-spine-audit\SKILL.md"
-    },
-    @{
-        Source = "skills\paper-spine-latex\SKILL.md"
-        Target = ".codex\skills\paper-spine-latex\SKILL.md"
-    },
-    @{
-        Source = "skills\paper-spine-research\references\style-learning-workflow.md"
-        Target = ".codex\skills\paper-spine-research\references\style-learning-workflow.md"
-    },
-    @{
-        Source = "skills\paper-spine-update\scripts\paperspine_update.py"
-        Target = ".codex\skills\paper-spine-update\scripts\paperspine_update.py"
-    },
-    @{
         Source = "skills\nature-polishing\static\core\hydraulic-engineering.md"
         Target = ".codex\skills\nature-polishing\static\core\hydraulic-engineering.md"
-    },
-    @{
-        Source = "skills\docx-editor-cn\SKILL.md"
-        Target = ".codex\skills\docx-editor-cn\SKILL.md"
-    },
-    @{
-        Source = "skills\docx-editor-cn\scripts\apply_format_contract.py"
-        Target = ".codex\skills\docx-editor-cn\scripts\apply_format_contract.py"
-    },
-    @{
-        Source = "skills\docx-editor-cn\scripts\format_contract_guard.py"
-        Target = ".codex\skills\docx-editor-cn\scripts\format_contract_guard.py"
-    },
-    @{
-        Source = "skills\docx-editor-cn\scripts\word_structure_guard.py"
-        Target = ".codex\skills\docx-editor-cn\scripts\word_structure_guard.py"
     }
 )
 

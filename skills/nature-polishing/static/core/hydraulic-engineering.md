@@ -193,13 +193,11 @@ Before final delivery of Chinese water-engineering reports or coursework:
 - Keep teacher-facing prompts, self-check notes, and process language out of the
   submitted body. Convert them into formal basis, calculation, assumption, or
   limitation statements.
-- If an official school or teacher Word template is available, final Word
-  delivery must preserve the native template cover and document structure. Use
-  the template as the base document, or merge the body into it, instead of
-  recreating the cover by hand. Verify cover fields, section/page settings,
-  headings, updateable TOC fields, headers/footers, and required formatting
-  after the merge.
-- For Word/PDF/Markdown outputs, reopen or parse the actual artifact and check
+- For LaTeX/PDF final delivery, preserve official school requirements by using
+  real source assets and explicit format contracts. Do not recreate a school
+  cover, table of contents, or required field from memory; ask for the exact
+  cover image, PDF, template, or file path during final formatting.
+- For LaTeX/PDF/Markdown outputs, reopen or parse the actual artifact and check
   that key numbers remain present, old values are absent, table/paragraph counts
   are plausible, and there is no mojibake or unexpected `?` corruption.
 
